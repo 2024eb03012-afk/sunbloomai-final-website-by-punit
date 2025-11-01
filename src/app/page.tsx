@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useId, Suspense } from "react";
-import dynamic from "next/dynamic";
+import { useEffect, useMemo, useRef, useState, useId } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
-const ThreeSun = dynamic(() => import("../components/ThreeSun"), { ssr: false });
 import Link from "next/link";
 // Logo will be referenced directly from public directory
 import { Open_Sans, Poppins } from "next/font/google";
 import LogoMarquee from "../components/LogoMarquee";
 import { RetroGrid } from "@/components/ui/retro-grid";
+import { LineShadowText } from "@/components/ui/line-shadow-text";
+import { AuroraText } from "@/components/ui/aurora-text";
 
 const openSans = Open_Sans({ subsets: ["latin"], weight: ["400", "600"], display: "swap" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["700", "800"], display: "swap" });
@@ -147,59 +147,68 @@ function Hero() {
     >
       <RetroGrid className="opacity-30" />
       <div className="mx-auto max-w-[1200px] px-5 py-24 md:py-28 lg:py-32 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="flex flex-col items-start gap-8 max-w-3xl reveal is-visible">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-3 py-1 text-xs text-muted-foreground">
-            <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-            Bespoke AI agents as a service
-          </div>
-          <h1 className="text-4xl md:text-6xl font-semibold tracking-tight">
-            Experience your first AI Agent in the next 10 minutes.
-          </h1>
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
-            We build Premium AI agents that work the way your team does and drives revenue for your business. Solving Real Business Problems. With Real AI Employees.
-          </p>
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <a
-              href="#use-cases"
-              className="btn btn-glitter"
-              ref={glitterRef}
-              onMouseMove={(e) => {
-                const r = (e.currentTarget as HTMLAnchorElement).getBoundingClientRect();
-                const x = ((e.clientX - r.left) / r.width) * 100;
-                const y = ((e.clientY - r.top) / r.height) * 100;
-                (e.currentTarget as HTMLElement).style.setProperty("--x", `${x}%`);
-                (e.currentTarget as HTMLElement).style.setProperty("--y", `${y}%`);
-              }}
+        <div className="flex flex-col items-center gap-12">
+          <div className="flex flex-col items-center gap-8 max-w-4xl text-center reveal">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-3 py-1 text-xs text-muted-foreground">
+              <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
+              Bespoke AI agents as a service
+            </div>
+            <LineShadowText
+              as="h1"
+              className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tight whitespace-nowrap"
             >
-              Try it now →
-            </a>
-            <a
-              href="https://calendly.com/anmol-sunbloomai/30min"
-              className="btn btn-primary"
-              onClick={openCalendlyPopup}
-              onMouseMove={(e) => {
-                const r = (e.currentTarget as HTMLAnchorElement).getBoundingClientRect();
-                const x = ((e.clientX - r.left) / r.width) * 100;
-                const y = ((e.clientY - r.top) / r.height) * 100;
-                (e.currentTarget as HTMLElement).style.setProperty("--x", `${x}%`);
-                (e.currentTarget as HTMLElement).style.setProperty("--y", `${y}%`);
-              }}
-              rel="noopener noreferrer"
-            >
-              Book a strategy call
-            </a>
-          </div>
-          <div className="text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">Outcomes: </span>
-            {outcomes[idx]}
-          </div>
-          </div>
-          <div className="relative h-[320px] sm:h-[420px] lg:h-[520px]">
-            <div className="absolute inset-0">
-              <Suspense fallback={<div className="w-full h-full" />}> 
-                <ThreeSun />
-              </Suspense>
+              You still don't have AI Agents
+            </LineShadowText>
+            <div className="flex items-center justify-center gap-3 text-balance">
+              <AuroraText
+                className="text-[2.25rem] leading-tight md:text-[3.25rem] lg:text-[4rem]"
+                words={[
+                  "Bulk calling your List",
+                  "Screening your Candidates",
+                  "Doing Personalised Lead Generation",
+                  "Doing Cold Calls",
+                  "Doing Appointment Bookings",
+                ]}
+              />
+              <span className="text-[2.25rem] font-bold leading-tight md:text-[3.25rem] lg:text-[4rem]">?</span>
+            </div>
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+              We build Premium AI agents that work the way your team does and drives revenue for your business. Solving Real Business Problems. With Real AI Employees.
+            </p>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-center gap-3 w-full sm:w-auto">
+              <a
+                href="#use-cases"
+                className="btn btn-glitter"
+                ref={glitterRef}
+                onMouseMove={(e) => {
+                  const r = (e.currentTarget as HTMLAnchorElement).getBoundingClientRect();
+                  const x = ((e.clientX - r.left) / r.width) * 100;
+                  const y = ((e.clientY - r.top) / r.height) * 100;
+                  (e.currentTarget as HTMLElement).style.setProperty("--x", `${x}%`);
+                  (e.currentTarget as HTMLElement).style.setProperty("--y", `${y}%`);
+                }}
+              >
+                Try it now →
+              </a>
+              <a
+                href="https://calendly.com/anmol-sunbloomai/30min"
+                className="btn btn-primary"
+                onClick={openCalendlyPopup}
+                onMouseMove={(e) => {
+                  const r = (e.currentTarget as HTMLAnchorElement).getBoundingClientRect();
+                  const x = ((e.clientX - r.left) / r.width) * 100;
+                  const y = ((e.clientY - r.top) / r.height) * 100;
+                  (e.currentTarget as HTMLElement).style.setProperty("--x", `${x}%`);
+                  (e.currentTarget as HTMLElement).style.setProperty("--y", `${y}%`);
+                }}
+                rel="noopener noreferrer"
+              >
+                Book a strategy call
+              </a>
+            </div>
+            <div className="text-sm text-muted-foreground text-center">
+              <span className="font-medium text-foreground">Outcomes: </span>
+              {outcomes[idx]}
             </div>
           </div>
         </div>

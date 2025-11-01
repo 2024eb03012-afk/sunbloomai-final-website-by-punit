@@ -247,6 +247,23 @@ details[open] summary .faq-indicator { transform: rotate(45deg); }
   100% { transform: translateX(100%); }
 }
 
+.aurora-text-gradient {
+  background-size: 200% 200%;
+  animation: aurora-shift 7s ease-in-out infinite;
+}
+
+@keyframes aurora-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 @property --service-border-angle {
   syntax: "<angle>";
   initial-value: 0deg;
