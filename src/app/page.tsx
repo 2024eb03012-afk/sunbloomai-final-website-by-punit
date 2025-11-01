@@ -10,6 +10,7 @@ import Link from "next/link";
 // Logo will be referenced directly from public directory
 import { Open_Sans, Poppins } from "next/font/google";
 import LogoMarquee from "../components/LogoMarquee";
+import { RetroGrid } from "@/components/ui/retro-grid";
 
 const openSans = Open_Sans({ subsets: ["latin"], weight: ["400", "600"], display: "swap" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["700", "800"], display: "swap" });
@@ -40,15 +41,15 @@ function Header() {
   return (
     <header
       className={`sticky top-0 z-50 transition-all ${
-        atTop ? "bg-gradient-to-r from-white/30 to-white/10 backdrop-blur-2xl backdrop-saturate-150 rounded-full mx-6 mt-6 shadow-2xl border border-white/25" : "bg-gradient-to-r from-white/30 to-white/10 backdrop-blur-2xl backdrop-saturate-150 rounded-full mx-6 mt-6 shadow-2xl border border-white/25"
+        atTop ? "bg-gradient-to-r from-white/90 to-white/80 backdrop-blur-2xl backdrop-saturate-150 rounded-full mx-6 mt-6 shadow-2xl border border-black/10" : "bg-gradient-to-r from-white/90 to-white/80 backdrop-blur-2xl backdrop-saturate-150 rounded-full mx-6 mt-6 shadow-2xl border border-black/10"
       }`}
     >
       <div className="mx-auto max-w-[650px] px-5 py-3 flex items-center justify-between">
         <Link href="#" aria-label="Sun Bloom AI" className="flex items-center gap-2">
           <Image src="/sunbloom-ai.png" alt="Sun Bloom AI logo" width={28} height={28} priority />
-          <span className={`${poppins.className} text-lg font-bold tracking-tight lowercase text-white`}>SunbloomAI</span>
+          <span className={`${poppins.className} text-lg font-bold tracking-tight lowercase text-foreground`}>SunbloomAI</span>
         </Link>
-        <nav className="hidden md:flex items-center gap-6 text-sm font-bold text-white">
+        <nav className="hidden md:flex items-center gap-6 text-sm font-bold text-foreground">
           <a href="#" className="hover:text-foreground">Home</a>
           <a href="#use-cases" className="hover:text-foreground">Service</a>
           <a href="#outcomes" className="hover:text-foreground">Testimonial</a>
@@ -132,7 +133,7 @@ function Hero() {
   }, [outcomes.length]);
   return (
     <section
-      className="relative -mt-16 pt-6 border-b border-[var(--border)]"
+      className="relative -mt-16 pt-6 border-b border-[var(--border)] overflow-hidden"
       onMouseMove={(e) => {
         if (reduceMotion) return;
         const r = e.currentTarget.getBoundingClientRect();
@@ -144,7 +145,8 @@ function Hero() {
         background: `radial-gradient(600px circle at ${spot.x}% ${spot.y}%, rgba(245,192,68,.08), transparent 45%)`,
       }}
     >
-      <div className="mx-auto max-w-[1200px] px-5 py-24 md:py-28 lg:py-32">
+      <RetroGrid className="opacity-30" />
+      <div className="mx-auto max-w-[1200px] px-5 py-24 md:py-28 lg:py-32 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="flex flex-col items-start gap-8 max-w-3xl reveal is-visible">
           <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-3 py-1 text-xs text-muted-foreground">
@@ -257,7 +259,7 @@ function Outcomes() {
   ];
   return (
     <section id="outcomes" className="bg-muted border-y border-[var(--border)]">
-      <div className="mx-auto max-w-[1200px] px-5 py-14 grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="mx-auto max-w-[1200px] px-5 pt-12 md:pt-16 pb-14 grid grid-cols-1 sm:grid-cols-3 gap-6">
         {items.map((m, i) => (
           <div
             key={m.label}
@@ -375,7 +377,7 @@ function UseCases() {
 
   return (
     <section id="use-cases">
-      <div className="mx-auto max-w-[1200px] px-5 py-24">
+      <div className="mx-auto max-w-[1200px] px-5 pt-8 pb-24">
         <div className="flex items-end justify-between gap-6 mb-10">
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">Our Services</h2>
           <a
@@ -396,8 +398,13 @@ function UseCases() {
                 key={service.title}
                 layoutId={`service-card-${idx}-${id}`}
                 className={`service-card reveal ${isActive ? "service-card--expanded" : ""}`}
-                style={{ transitionDelay: `${idx * 70}ms` }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                style={{ 
+                  opacity: isActive ? 0 : 1,
+                  pointerEvents: isActive ? "none" : "auto"
+                }}
                 onMouseMove={(e) => {
+                  if (isActive) return;
                   const rect = e.currentTarget.getBoundingClientRect();
                   const offsetX = ((e.clientX - rect.left) / rect.width - 0.5) * 10;
                   const offsetY = ((e.clientY - rect.top) / rect.height - 0.5) * 10;
@@ -412,17 +419,33 @@ function UseCases() {
               >
                 <div className="flex h-full flex-col">
                   <div className="flex items-center justify-between gap-3 text-xs uppercase tracking-[0.14em]">
-                    <motion.span layoutId={`service-tag-${idx}-${id}`} className="text-white/70">
+                    <motion.span 
+                      layoutId={`service-tag-${idx}-${id}`} 
+                      className="text-muted-foreground"
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                    >
                       {service.tag}
                     </motion.span>
-                    <motion.span layoutId={`service-index-${idx}-${id}`} className="text-muted-foreground/60">
+                    <motion.span 
+                      layoutId={`service-index-${idx}-${id}`} 
+                      className="text-muted-foreground/60"
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                    >
                       0{idx + 1}
                     </motion.span>
                   </div>
-                  <motion.h3 layoutId={`service-title-${idx}-${id}`} className="mt-4 text-lg font-medium text-foreground">
+                  <motion.h3 
+                    layoutId={`service-title-${idx}-${id}`} 
+                    className="mt-4 text-lg font-medium text-foreground"
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
                     {service.title}
                   </motion.h3>
-                  <motion.p layoutId={`service-desc-${idx}-${id}`} className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  <motion.p 
+                    layoutId={`service-desc-${idx}-${id}`} 
+                    className="mt-3 text-sm leading-relaxed text-muted-foreground"
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
                     {service.desc}
                   </motion.p>
                   <div className="mt-auto pt-6 flex flex-col gap-4">
@@ -455,6 +478,7 @@ function UseCases() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
                 onClick={() => setActiveIdx(null)}
               />
               <motion.div
@@ -462,27 +486,43 @@ function UseCases() {
                 layoutId={`service-card-${activeIdx}-${id}`}
                 ref={modalRef}
                 className="service-modal"
-                initial={{ opacity: 0, scale: 0.97 }}
+                initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ type: "spring", stiffness: 150, damping: 18 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 280, damping: 24, duration: 0.3 }}
                 onClick={(event) => event.stopPropagation()}
               >
                 <button className="service-modal-close" type="button" onClick={() => setActiveIdx(null)} aria-label="Close details">
                   ✕
                 </button>
                 <div className="service-modal-header">
-                  <motion.span layoutId={`service-tag-${activeIdx}-${id}`} className="service-modal-tag">
+                  <motion.span 
+                    layoutId={`service-tag-${activeIdx}-${id}`} 
+                    className="service-modal-tag"
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
                     {activeService.tag}
                   </motion.span>
-                  <motion.span layoutId={`service-index-${activeIdx}-${id}`} className="service-modal-index">
+                  <motion.span 
+                    layoutId={`service-index-${activeIdx}-${id}`} 
+                    className="service-modal-index"
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
                     0{activeIdx + 1}
                   </motion.span>
                 </div>
-                <motion.h3 layoutId={`service-title-${activeIdx}-${id}`} className="service-modal-title">
+                <motion.h3 
+                  layoutId={`service-title-${activeIdx}-${id}`} 
+                  className="service-modal-title"
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                >
                   {activeService.title}
                 </motion.h3>
-                <motion.p layoutId={`service-desc-${activeIdx}-${id}`} className="service-modal-intro">
+                <motion.p 
+                  layoutId={`service-desc-${activeIdx}-${id}`} 
+                  className="service-modal-intro"
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                >
                   {activeService.details}
                 </motion.p>
                 <div className="service-modal-body">
@@ -681,3 +721,4 @@ export default function Landing() {
     </div>
   );
 }
+
