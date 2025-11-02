@@ -19,7 +19,7 @@ export const InfiniteMovingCards = ({
   return (
     <div className={cn("relative z-20 max-w-7xl", className)}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map((item, idx) => (
+        {items.map((item) => (
           <div
             className="testimonial-card relative w-full rounded-2xl px-6 py-6 aspect-square"
             key={item.name}

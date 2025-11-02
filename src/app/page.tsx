@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import Link from "next/link";
 // Logo will be referenced directly from public directory
-import { Open_Sans, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import LogoMarquee from "../components/LogoMarquee";
 import { RetroGrid } from "@/components/ui/retro-grid";
 import { LineShadowText } from "@/components/ui/line-shadow-text";
@@ -17,7 +17,6 @@ import { Testimonials } from "../components/Testimonials";
 import { AboutUs } from "../components/AboutUs";
 import { RainbowButton } from "@/components/ui/rainbow-button";
 
-const openSans = Open_Sans({ subsets: ["latin"], weight: ["400", "600"], display: "swap" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["700", "800"], display: "swap" });
 
 type CalendlyWindow = Window & {
@@ -126,7 +125,7 @@ function Hero() {
               as="h1"
               className="text-2xl sm:text-3xl md:text-5xl font-semibold tracking-tight whitespace-nowrap"
             >
-              You still don't have AI Agents
+              You still don&apos;t have AI Agents
             </LineShadowText>
             <div className="flex items-center justify-center gap-3 -mt-2">
               <AuroraText
@@ -171,50 +170,6 @@ function Hero() {
     </section>
   );
 }
-
-function CountUp({ end, suffix = "", showPlus = false, durationMs = 1200 }: { end: number; suffix?: string; showPlus?: boolean; durationMs?: number }) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [val, setVal] = useState(0);
-  const [started, setStarted] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !started) {
-            setStarted(true);
-          }
-        });
-      },
-      { threshold: 0.4 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [started]);
-  useEffect(() => {
-    if (!started) return;
-    const start = performance.now();
-    const from = 0;
-    const to = end;
-    const animate = (t: number) => {
-      const p = Math.min(1, (t - start) / durationMs);
-      const eased = 1 - Math.pow(1 - p, 3);
-      const current = from + (to - from) * eased;
-      setVal(current);
-      if (p < 1) requestAnimationFrame(animate);
-    };
-    const id = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(id);
-  }, [started, end, durationMs]);
-  const display = `${showPlus && end > 0 ? "+" : ""}${val.toFixed(0)}${suffix}`;
-  return (
-    <div ref={ref} aria-label={`${end}${suffix}`}>
-      {display}
-    </div>
-  );
-}
-
 
 function UseCases() {
   const services = [
