@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, useId } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 
 import Link from "next/link";
 // Logo will be referenced directly from public directory
@@ -13,6 +13,7 @@ import { LineShadowText } from "@/components/ui/line-shadow-text";
 import { AuroraText } from "@/components/ui/aurora-text";
 import { ProcessBeam } from "../components/ProcessBeam";
 import { SystemDemos } from "../components/SystemDemos";
+import { GoogleGeminiEffect } from "@/components/ui/google-gemini-effect";
 
 const openSans = Open_Sans({ subsets: ["latin"], weight: ["400", "600"], display: "swap" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["700", "800"], display: "swap" });
@@ -95,6 +96,20 @@ function Hero() {
     []
   );
   const glitterRef = useRef<HTMLAnchorElement | null>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  const pathLengths = [
+    useTransform(scrollYProgress, [0, 1], [0, 1]),
+    useTransform(scrollYProgress, [0, 1], [0, 1]),
+    useTransform(scrollYProgress, [0, 1], [0, 1]),
+    useTransform(scrollYProgress, [0, 1], [0, 1]),
+    useTransform(scrollYProgress, [0, 1], [0, 1]),
+  ];
   useEffect(() => {
     if (reduceMotion) return;
     const el = glitterRef.current;
@@ -140,6 +155,7 @@ function Hero() {
   }, [outcomes.length]);
   return (
     <section
+      ref={heroRef}
       className="relative -mt-16 pt-6 overflow-hidden"
       onMouseMove={(e) => {
         if (reduceMotion) return;
@@ -153,6 +169,14 @@ function Hero() {
       }}
     >
       <RetroGrid className="opacity-30" />
+      {!reduceMotion && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <GoogleGeminiEffect 
+            pathLengths={pathLengths}
+            className="opacity-40"
+          />
+        </div>
+      )}
       <div className="mx-auto max-w-[1200px] px-5 py-16 md:py-20 lg:py-22 relative z-10">
         <div className="flex flex-col items-center gap-12">
           <div className="flex flex-col items-center gap-8 max-w-4xl text-center reveal">
