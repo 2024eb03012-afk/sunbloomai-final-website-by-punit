@@ -12,19 +12,19 @@ interface VideoDemo {
 
 const demos: VideoDemo[] = [
   {
-    title: "Voice AI Agent",
-    description: "Appointment Booking Demo",
-    videoUrl: "#", // Replace with actual video URL
+    title: "Fashion Ads Generator Agent",
+    description: "AI-powered fashion advertisement creation",
+    videoUrl: "https://youtu.be/9ssgEMQ8ing",
   },
   {
-    title: "WhatsApp Automation",
-    description: "Automation Flow Demo",
-    videoUrl: "#", // Replace with actual video URL
+    title: "Recruitment Candidate Screening Agent",
+    description: "Intelligent candidate evaluation and screening",
+    videoUrl: "https://youtu.be/LKn2eBfdnvc",
   },
   {
-    title: "Email Lead Generation",
-    description: "Agent Video Demo",
-    videoUrl: "#", // Replace with actual video URL
+    title: "Appointment Reminder Voice Agent",
+    description: "Automated voice reminders and scheduling",
+    videoUrl: "https://www.youtube.com/watch?v=zeauVZL00H8",
   },
 ]
 
@@ -80,7 +80,10 @@ export function SystemDemos() {
                 )}
 
                 {/* Video container */}
-                <div className="relative aspect-video bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 overflow-hidden">
+                <div
+                  className="relative aspect-video bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 overflow-hidden cursor-pointer"
+                  onClick={() => demo.videoUrl && window.open(demo.videoUrl, '_blank')}
+                >
                   {/* Placeholder or video */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center transform transition-transform duration-500 group-hover:scale-110">
@@ -99,7 +102,7 @@ export function SystemDemos() {
                           <path d="M8 5v14l11-7z" />
                         </svg>
                       </div>
-                      <p className="text-xs text-muted-foreground font-medium">Video Demo</p>
+                      <p className="text-xs text-muted-foreground font-medium">Watch Demo</p>
                     </div>
                   </div>
 
@@ -118,6 +121,13 @@ export function SystemDemos() {
                       hoveredIndex === index && "opacity-100"
                     )}
                   />
+
+                  {/* Click hint */}
+                  <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="bg-black/60 text-white text-xs px-2 py-1 rounded-md backdrop-blur-sm">
+                      Click to watch
+                    </div>
+                  </div>
                 </div>
 
                 {/* Content */}

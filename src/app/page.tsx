@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useId } from "react";
+import { useEffect, useRef, useState, useId } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import Link from "next/link";
 // Logo will be referenced directly from public directory
@@ -13,7 +13,9 @@ import { LineShadowText } from "@/components/ui/line-shadow-text";
 import { AuroraText } from "@/components/ui/aurora-text";
 import { ProcessBeam } from "../components/ProcessBeam";
 import { SystemDemos } from "../components/SystemDemos";
-import { GoogleGeminiEffect } from "@/components/ui/google-gemini-effect";
+import { Testimonials } from "../components/Testimonials";
+import { AboutUs } from "../components/AboutUs";
+import { RainbowButton } from "@/components/ui/rainbow-button";
 
 const openSans = Open_Sans({ subsets: ["latin"], weight: ["400", "600"], display: "swap" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["700", "800"], display: "swap" });
@@ -91,71 +93,15 @@ function Hero() {
   ];
   const [idx, setIdx] = useState(0);
   const [spot, setSpot] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
-  const reduceMotion = useMemo(
-    () => typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    []
-  );
-  const glitterRef = useRef<HTMLAnchorElement | null>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
+  const reduceMotion = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const pathLengths = [
-    useTransform(scrollYProgress, [0, 1], [0, 1]),
-    useTransform(scrollYProgress, [0, 1], [0, 1]),
-    useTransform(scrollYProgress, [0, 1], [0, 1]),
-    useTransform(scrollYProgress, [0, 1], [0, 1]),
-    useTransform(scrollYProgress, [0, 1], [0, 1]),
-  ];
-  useEffect(() => {
-    if (reduceMotion) return;
-    const el = glitterRef.current;
-    if (!el) return;
-
-    let rafId = 0;
-    let lastSpawn = 0;
-    const spawnEveryMs = 140;
-
-    const spawn = () => {
-      const rect = el.getBoundingClientRect();
-      const baseDistance = Math.max(rect.width, rect.height) * 0.9;
-      const particle = document.createElement("span");
-      particle.className = "glitter-particle";
-      const angle = Math.random() * Math.PI * 2;
-      const distance = baseDistance * (0.6 + Math.random() * 0.9);
-      const tx = Math.cos(angle) * distance;
-      const ty = Math.sin(angle) * distance;
-      const durationMs = 900 + Math.random() * 700;
-      particle.style.setProperty("--tx", `${tx.toFixed(2)}px`);
-      particle.style.setProperty("--ty", `${ty.toFixed(2)}px`);
-      particle.style.setProperty("--d", `${durationMs.toFixed(0)}ms`);
-      el.appendChild(particle);
-      const cleanup = () => particle.remove();
-      particle.addEventListener("animationend", cleanup, { once: true });
-      window.setTimeout(cleanup, durationMs + 60);
-    };
-
-    const loop = (now: number) => {
-      if (!glitterRef.current) return;
-      if (now - lastSpawn > spawnEveryMs) {
-        spawn();
-        lastSpawn = now;
-      }
-      rafId = requestAnimationFrame(loop);
-    };
-    rafId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(rafId);
-  }, [reduceMotion]);
   useEffect(() => {
     const id = setInterval(() => setIdx((i) => (i + 1) % outcomes.length), 4000);
     return () => clearInterval(id);
   }, [outcomes.length]);
+
   return (
     <section
-      ref={heroRef}
       className="relative -mt-16 pt-6 overflow-hidden"
       onMouseMove={(e) => {
         if (reduceMotion) return;
@@ -165,34 +111,26 @@ function Hero() {
         setSpot({ x, y });
       }}
       style={{
-        background: `radial-gradient(600px circle at ${spot.x}% ${spot.y}%, rgba(255, 154, 118, 0.08), transparent 45%)`,
+        background: `radial-gradient(480px circle at ${spot.x}% ${spot.y}%, rgba(255, 154, 118, 0.08), transparent 45%)`,
       }}
     >
       <RetroGrid className="opacity-30" />
-      {!reduceMotion && (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-          <GoogleGeminiEffect 
-            pathLengths={pathLengths}
-            className="opacity-40"
-          />
-        </div>
-      )}
-      <div className="mx-auto max-w-[1200px] px-5 py-16 md:py-20 lg:py-22 relative z-10">
-        <div className="flex flex-col items-center gap-12">
-          <div className="flex flex-col items-center gap-8 max-w-4xl text-center reveal">
+      <div className="mx-auto max-w-[1200px] px-5 py-13 md:py-16 lg:py-18 relative z-10">
+        <div className="flex flex-col items-center gap-10">
+          <div className="flex flex-col items-center gap-6 max-w-4xl text-center reveal">
             <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-3 py-1 text-xs text-muted-foreground">
               <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
               Bespoke AI agents as a service
             </div>
             <LineShadowText
               as="h1"
-              className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tight whitespace-nowrap"
+              className="text-2xl sm:text-3xl md:text-5xl font-semibold tracking-tight whitespace-nowrap"
             >
               You still don't have AI Agents
             </LineShadowText>
             <div className="flex items-center justify-center gap-3 -mt-2">
               <AuroraText
-                className="text-[2.25rem] leading-tight md:text-[3.25rem] lg:text-[4rem] whitespace-nowrap"
+                className="text-[1.8rem] leading-tight md:text-[2.6rem] lg:text-[3.2rem] whitespace-nowrap"
                 bold={true}
                 words={[
                   "Bulk calling your List",
@@ -202,41 +140,26 @@ function Hero() {
                   "Doing Appointment Bookings",
                 ]}
               />
-              <span className="text-[2.25rem] font-bold leading-tight md:text-[3.25rem] lg:text-[4rem]">?</span>
+              <span className="text-[1.8rem] font-bold leading-tight md:text-[2.6rem] lg:text-[3.2rem]">?</span>
             </div>
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
               We build Premium AI agents that work the way your team does and drives revenue for your business. Solving Real Business Problems. With Real AI Employees.
             </p>
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-center gap-3 w-full sm:w-auto">
-              <a
-                href="#use-cases"
-                className="btn btn-glitter"
-                ref={glitterRef}
-                onMouseMove={(e) => {
-                  const r = (e.currentTarget as HTMLAnchorElement).getBoundingClientRect();
-                  const x = ((e.clientX - r.left) / r.width) * 100;
-                  const y = ((e.clientY - r.top) / r.height) * 100;
-                  (e.currentTarget as HTMLElement).style.setProperty("--x", `${x}%`);
-                  (e.currentTarget as HTMLElement).style.setProperty("--y", `${y}%`);
-                }}
+            <div className="w-full flex justify-center">
+              <RainbowButton
+                asChild
+                size="lg"
+                variant="default"
+                className="rainbow-button-solid h-12 px-8 text-base font-semibold rounded-lg text-white hover:scale-105 transition-all duration-200 shadow-lg"
               >
-                Try it now →
-              </a>
-              <a
-                href="https://calendly.com/anmol-sunbloomai/30min"
-                className="btn btn-primary"
-                onClick={openCalendlyPopup}
-                onMouseMove={(e) => {
-                  const r = (e.currentTarget as HTMLAnchorElement).getBoundingClientRect();
-                  const x = ((e.clientX - r.left) / r.width) * 100;
-                  const y = ((e.clientY - r.top) / r.height) * 100;
-                  (e.currentTarget as HTMLElement).style.setProperty("--x", `${x}%`);
-                  (e.currentTarget as HTMLElement).style.setProperty("--y", `${y}%`);
-                }}
-                rel="noopener noreferrer"
-              >
-                Book a strategy call
-              </a>
+                <a
+                  href="https://calendly.com/anmol-sunbloomai/30min"
+                  onClick={openCalendlyPopup}
+                  rel="noopener noreferrer"
+                >
+                  Book a strategy call
+                </a>
+              </RainbowButton>
             </div>
             <div className="text-sm text-muted-foreground text-center">
               <span className="font-medium text-foreground">Outcomes: </span>
@@ -292,98 +215,79 @@ function CountUp({ end, suffix = "", showPlus = false, durationMs = 1200 }: { en
   );
 }
 
-function Outcomes() {
-  const items: { label: string; end: number; showPlus?: boolean }[] = [
-    { label: "Ticket backlog", end: -40 },
-    { label: "Inbound conversion", end: 28, showPlus: true },
-    { label: "Lead response rate", end: 42, showPlus: true },
-  ];
-  return (
-    <section id="outcomes" className="bg-[#F7F5F0]">
-      <div className="mx-auto max-w-[1200px] px-5 pt-12 md:pt-16 pb-14 grid grid-cols-1 sm:grid-cols-3 gap-6">
-        {items.map((m, i) => (
-          <div
-            key={m.label}
-            className="rounded-xl bg-white p-6 reveal"
-            style={{ transitionDelay: `${i * 80}ms` }}
-          >
-            <div className="text-3xl md:text-4xl font-semibold">
-              <CountUp end={m.end} suffix="%" showPlus={m.showPlus ?? false} />
-            </div>
-            <div className="text-sm text-muted-foreground mt-1">{m.label}</div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 function UseCases() {
   const services = [
     {
-      title: "Custom AI Voice Calling Agent",
-      desc: "Design a voice agent that mirrors your brand tone, handles objections, and stays compliant on every outbound call.",
-      details: "Deploy bespoke playbooks that adapt in-call, sync notes to your CRM, and surface conversations analytics in real time.",
+      title: "Custom AI Calling Voice Agents",
+      desc: "We build inbound and outbound AI voice agents tailored to your business needs — designed to handle customer conversations just like a real human agent.",
+      details: "Our custom voice agents are built specifically for your industry and use case. They handle conversations naturally, adapt to customer responses, and integrate seamlessly with your existing systems.",
       tag: "Voice AI",
       highlights: [
-        "Dynamic intent detection that adapts the script in milliseconds",
-        "Real-time CRM logging with call scoring and follow-up nudges",
-        "Compliance-aware guardrails tailored to your industry",
+        "Real Estate: Automated lead follow-up system that calls and nurtures potential buyers",
+        "Solar Industry: Outbound lead follow-up to increase conversion and engagement",
+        "Tailored to your business needs with natural human-like conversations",
+        "Handles both inbound and outbound calls with intelligent routing",
       ],
     },
     {
       title: "Appointment Booking Voice Agent",
-      desc: "Automate scheduling workflows by letting the agent negotiate slots, handle reschedules, and send confirmations instantly.",
-      details: "Integrates with your calendar stack, validates availability, and keeps humans looped in with smart summaries.",
+      desc: "Let your customers book appointments through voice — no manual work required.",
+      details: "Our AI agent connects directly with your CRM and calendar, schedules appointments automatically, and sends email confirmations to your customers in real time.",
       tag: "Scheduling",
       highlights: [
-        "Two-way sync with Google, Outlook, and HubSpot calendars",
-        "Automatic reminders via SMS, email, and voice callbacks",
-        "Escalation rules that hand off edge cases to live teams",
+        "Direct integration with your CRM and calendar systems",
+        "Automatic appointment scheduling without manual intervention",
+        "Real-time email confirmations sent to customers instantly",
+        "Handles reschedules and cancellations seamlessly",
       ],
     },
     {
-      title: "WhatsApp Chatbots",
-      desc: "Craft conversational flows that blend transactional updates, support, and upsells across multilingual WhatsApp journeys.",
-      details: "Ship secure flows with human handoff, campaign analytics, and rapid iteration powered by retrieval-augmented responses.",
+      title: "AI Chatbot Solutions",
+      desc: "Engage visitors across platforms with smart, conversational AI chatbots.",
+      details: "Deploy intelligent chatbots that understand context, answer questions, and handle requests across multiple channels — from your website to WhatsApp.",
       tag: "Messaging",
       highlights: [
-        "Broadcast and 1:1 flows with templated or generative replies",
-        "Multilingual understanding covering 40+ languages",
-        "Seamless live-agent takeover inside WhatsApp Business API",
+        "Website Voicebot: Acts like your 24/7 receptionist — answers questions, shares details, and books appointments",
+        "FAQ Chatbot: Handles customer queries instantly with company-trained responses",
+        "WhatsApp Chatbot: Trained on your business knowledge base to manage inquiries, appointments, and support requests directly on WhatsApp",
+        "Multi-platform deployment with consistent brand voice",
       ],
     },
     {
       title: "Recruitment Screening Voice Agent",
-      desc: "Pre-screen candidates with adaptive interviews, capture structured notes, and shortlist talent based on your criteria.",
-      details: "Evaluates for skills and culture fit, syncs evaluations to ATS, and flags edge cases for recruiter review.",
+      desc: "Automate your hiring process with an AI agent that makes bulk outbound calls to candidates, asks screening questions, records answers, and automatically updates your CRM or Excel database.",
+      details: "Save hours of HR time by automating candidate screening. Our voice agent conducts interviews, evaluates responses, and updates your database automatically — freeing your team to focus on final interviews and hiring decisions.",
       tag: "Talent AI",
       highlights: [
-        "Structured scorecards exported directly into your ATS",
-        "Adaptive questioning that follows up based on candidate replies",
-        "Bias-aware analyser with recruiter override controls",
+        "Bulk outbound calls to multiple candidates simultaneously",
+        "Asks screening questions and records candidate answers",
+        "Automatically updates your CRM or Excel database",
+        "Saves hours of HR time on manual screening work",
       ],
     },
     {
-      title: "Lead Generation AI Agents",
-      desc: "Warm up inbound and outbound leads with contextual outreach that personalises messaging to segment and intent.",
-      details: "Enriches leads automatically, prioritises hot prospects, and keeps revenue teams aligned with pipeline reporting.",
+      title: "Lead Generation & Outreach Automation",
+      desc: "Scrape LinkedIn and company info to auto-create hyper-personalized email messages. Send each lead recent company news and unique, context-rich messages automatically.",
+      details: "Fully automate your outreach process with AI-powered personalization. Our system researches each lead, creates customized messages based on recent company news, and sends them automatically — boosting responses and lead engagement.",
       tag: "Revenue",
       highlights: [
-        "Intent classification that scores leads mid-conversation",
-        "Personalised scripts sourced from connected knowledge bases",
-        "Pipeline dashboards that update in real time",
+        "Scrapes LinkedIn and company information automatically",
+        "Auto-creates hyper-personalized email messages for each lead",
+        "Includes recent company news and context-rich content",
+        "Fully automated outreach boosting responses and lead engagement",
       ],
     },
     {
-      title: "Real Estate Bulk Calling AI Agents",
-      desc: "Scale property campaigns with agents that qualify buyers, schedule showings, and update listings data around the clock.",
-      details: "Understands geo-specific compliance, logs call outcomes to your CRM, and coordinates follow-ups with live reps.",
-      tag: "Real Estate",
+      title: "Fashion & UGC Ads Automation",
+      desc: "Turn your raw product images into high-performing ad creatives — instantly. Generate both image and video ads in ready-to-run formats designed for platforms like Meta, Google, and TikTok.",
+      details: "Perfect for e-commerce, fashion, and beauty brands. Transform your product photos into professional ad creatives that are optimized for each platform's best practices and ready to launch immediately.",
+      tag: "Creative AI",
       highlights: [
-        "Geo-fenced compliance and DNC list adherence built-in",
-        "Instant showing confirmations synced with your calendars",
-        "Inventory updates pushed back into your MLS or CRM",
+        "Instantly converts raw product images into high-performing ad creatives",
+        "Generates both image and video ads in ready-to-run formats",
+        "Optimized for Meta, Google, and TikTok platforms",
+        "Perfect for e-commerce, fashion, and beauty brands",
       ],
     },
   ];
@@ -654,6 +558,10 @@ function FAQ() {
       q: "Do you maintain agents?",
       a: "Yes. We operate, monitor, and iterate with clear SLAs.",
     },
+    {
+      q: "Can you make HIPAA compliant agents?",
+      a: "Yes. We can do support HIPAA compliant voice agents.",
+    },
   ];
   return (
     <section id="faq">
@@ -700,11 +608,12 @@ export default function Landing() {
       <main>
         <Hero />
         <LogoMarquee />
-        <Outcomes />
         <UseCases />
         {/* Contact removed */}
         <Process />
         <SystemDemos />
+        <Testimonials />
+        <AboutUs />
         <FAQ />
       </main>
       {/* Footer rendered globally in RootLayout */}

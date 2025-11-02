@@ -37,6 +37,11 @@
   --sidebar-accent-foreground: white;
   --sidebar-border: #FFB6A3;
   --sidebar-ring: #FF9A76;
+  --color-1: oklch(66.2% 0.225 25.9);
+  --color-2: oklch(60.4% 0.26 302);
+  --color-3: oklch(69.6% 0.165 251);
+  --color-4: oklch(80.2% 0.134 225);
+  --color-5: oklch(90.7% 0.231 133);
 }
 
 @theme inline {
@@ -124,6 +129,20 @@
   100% {
     background-position: 100% -100%;
     }
+  }
+  --animate-rainbow: rainbow var(--speed, 2s) infinite linear;
+  --color-color-5: var(--color-5);
+  --color-color-4: var(--color-4);
+  --color-color-3: var(--color-3);
+  --color-color-2: var(--color-2);
+  --color-color-1: var(--color-1);
+  @keyframes rainbow {
+  0% {
+    background-position: 0%;
+    }
+  100% {
+    background-position: 200%;
+    }
   }}
 
 /* Light mode only - dark mode disabled */
@@ -160,6 +179,75 @@
   pointer-events: none;
 }
 .btn-primary:hover::after { opacity: 1; }
+.btn-strategy {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 0.95rem 2.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 999px;
+  color: var(--accent-foreground);
+  background: linear-gradient(135deg, rgba(255, 111, 97, 0.95), rgba(255, 181, 71, 0.85));
+  box-shadow:
+    0 18px 48px rgba(255, 111, 97, 0.45),
+    0 4px 12px rgba(255, 181, 71, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+  transition: transform 180ms ease, box-shadow 220ms ease;
+}
+.btn-strategy::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(255, 173, 120, 0.7), rgba(255, 224, 166, 0.05));
+  filter: blur(32px);
+  opacity: 0.75;
+  z-index: -1;
+  animation: strategyGlow 6s ease-in-out infinite;
+}
+.btn-strategy:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 26px 60px rgba(255, 111, 97, 0.52),
+    0 8px 24px rgba(255, 181, 71, 0.38),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+.btn-strategy:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(255, 181, 71, 0.3),
+    0 26px 60px rgba(255, 111, 97, 0.45),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+@keyframes strategyGlow {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+/* Rainbow Button - Solid color with rainbow bottom effect */
+.rainbow-button-solid {
+  background: var(--accent) !important;
+  background-image: none !important;
+  background-clip: padding-box !important;
+  border: 2px solid transparent !important;
+}
+
+.rainbow-button-solid:hover {
+  background: color-mix(in srgb, var(--accent) 90%, transparent) !important;
+}
+
 .btn-outline {
   border: 1px solid var(--border);
   color: var(--foreground);
@@ -288,7 +376,6 @@ details[open] summary .faq-indicator { transform: rotate(45deg); }
   }
 }
 
-
 .service-card {
   position: relative;
   isolation: isolate;
@@ -304,7 +391,6 @@ details[open] summary .faq-indicator { transform: rotate(45deg); }
   transform: perspective(1100px) rotateX(var(--service-tilt-x, 0deg)) rotateY(var(--service-tilt-y, 0deg)) translateY(var(--service-lift, 0px));
   --service-lift: 0px;
 }
-
 
 .service-card:hover {
   box-shadow:
@@ -362,7 +448,6 @@ details[open] summary .faq-indicator { transform: rotate(45deg); }
   z-index: 2;
   animation: gradientShift 3s ease-in-out infinite;
 }
-
 
 .service-chip {
   display: inline-flex;
@@ -598,6 +683,73 @@ details[open] summary .faq-indicator { transform: rotate(45deg); }
   }
 }
 
+/* Infinite Moving Cards Animation */
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% / 2));
+  }
+}
+
+.animate-scroll {
+  animation: scroll var(--animation-duration, 40s) linear infinite;
+  animation-direction: var(--animation-direction, forwards);
+}
+
+/* Testimonial Cards - Similar to Service Cards */
+.testimonial-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 1.35rem;
+  padding: 1.9rem;
+  background: white;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.testimonial-card blockquote {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonial-card {
+    transition: none;
+  }
+  .testimonial-card:hover {
+    transform: none;
+  }
+}
+
+/* Founder Cards */
+.founder-card {
+  position: relative;
+  isolation: isolate;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.founder-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .founder-card {
+    transition: none;
+  }
+  .founder-card:hover {
+    transform: none;
+  }
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -630,6 +782,11 @@ details[open] summary .faq-indicator { transform: rotate(45deg); }
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --color-1: oklch(66.2% 0.225 25.9);
+  --color-2: oklch(60.4% 0.26 302);
+  --color-3: oklch(69.6% 0.165 251);
+  --color-4: oklch(80.2% 0.134 225);
+  --color-5: oklch(90.7% 0.231 133);
 }
 
 @layer base {
