@@ -4,10 +4,15 @@ import React, { forwardRef, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { AnimatedBeam } from "@/components/ui/animated-beam"
 
-const Circle = forwardRef<
-  HTMLDivElement,
-  { className?: string; children?: React.ReactNode; title: string; description?: string }
->(({ className, children, title, description }, ref) => {
+interface CircleProps {
+  className?: string;
+  children?: React.ReactNode;
+  title: string;
+  description?: string;
+  circleRef?: React.RefObject<HTMLElement | null>;
+}
+
+const Circle = forwardRef<HTMLDivElement, CircleProps>(({ className, children, title, description, circleRef }, ref) => {
   return (
     <div
       ref={ref}
@@ -16,7 +21,10 @@ const Circle = forwardRef<
         className
       )}
     >
-      <div className="flex size-16 items-center justify-center rounded-full border-2 border-[#FF9A76]/30 bg-white p-3 shadow-[0_4px_20px_rgba(255,154,118,0.15)] mb-3 transition-all hover:shadow-[0_6px_24px_rgba(255,154,118,0.25)] hover:border-[#FF9A76]/50">
+      <div
+        ref={circleRef as React.Ref<HTMLDivElement>}
+        className="flex size-16 items-center justify-center rounded-full border-2 border-[#FF9A76]/30 bg-white p-3 shadow-[0_4px_20px_rgba(255,154,118,0.15)] mb-3 transition-all hover:shadow-[0_6px_24px_rgba(255,154,118,0.25)] hover:border-[#FF9A76]/50"
+      >
         <div className="text-[#FF9A76]">
           {children}
         </div>
@@ -35,9 +43,9 @@ Circle.displayName = "Circle"
 
 export function ProcessBeam() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const auditRef = useRef<HTMLDivElement>(null)
-  const prototypeRef = useRef<HTMLDivElement>(null)
-  const deploymentRef = useRef<HTMLDivElement>(null)
+  const auditCircleRef = useRef<HTMLDivElement>(null)
+  const prototypeCircleRef = useRef<HTMLDivElement>(null)
+  const deploymentCircleRef = useRef<HTMLDivElement>(null)
 
   return (
     <div
@@ -45,7 +53,7 @@ export function ProcessBeam() {
       ref={containerRef}
     >
       <div className="flex w-full max-w-5xl flex-row items-center justify-between gap-12 md:gap-16">
-        <Circle ref={auditRef} title="AI Audit" description="We audit your business to map out the highest ROI AI implementations">
+        <Circle circleRef={auditCircleRef} title="AI Audit" description="We audit your business to map out the highest ROI AI implementations">
           <svg
             width="32"
             height="32"
@@ -60,7 +68,7 @@ export function ProcessBeam() {
           </svg>
         </Circle>
 
-        <Circle ref={prototypeRef} title="Prototype" description="We prototype your AI system before the project and define the scope">
+        <Circle circleRef={prototypeCircleRef} title="Prototype" description="We prototype your AI system before the project and define the scope">
           <svg
             width="32"
             height="32"
@@ -76,7 +84,7 @@ export function ProcessBeam() {
           </svg>
         </Circle>
 
-        <Circle ref={deploymentRef} title="Deployment" description="We deploy our AI system and test it rigorously on real world benchmarks">
+        <Circle circleRef={deploymentCircleRef} title="Deployment" description="We deploy our AI system and test it rigorously on real world benchmarks">
           <svg
             width="32"
             height="32"
@@ -96,8 +104,8 @@ export function ProcessBeam() {
         duration={3}
         delay={0}
         containerRef={containerRef}
-        fromRef={auditRef}
-        toRef={prototypeRef}
+        fromRef={auditCircleRef}
+        toRef={prototypeCircleRef}
         curvature={-50}
         pathColor="#FF9A76"
         pathWidth={2}
@@ -109,8 +117,8 @@ export function ProcessBeam() {
         duration={3}
         delay={1.5}
         containerRef={containerRef}
-        fromRef={prototypeRef}
-        toRef={deploymentRef}
+        fromRef={prototypeCircleRef}
+        toRef={deploymentCircleRef}
         curvature={-50}
         pathColor="#FF9A76"
         pathWidth={2}

@@ -32,12 +32,15 @@ export function SystemDemos() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   return (
-    <section className="py-16 md:py-20" style={{ backgroundColor: '#FFF3E0' }}>
+    <section className="py-12 md:py-16" style={{ backgroundColor: '#FFF3E0' }}>
       <div className="mx-auto max-w-[1200px] px-5">
-        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-12 text-center">
-          How our systems work
+        <h2 className="text-2xl md:text-3xl font-semibold tracking-wide mb-10 text-center">
+          See our systems in{" "}
+          <span className="bg-[linear-gradient(120deg,#FF6B35,#E65100,#FF6B35)] bg-clip-text text-transparent bg-[length:200%_200%] animate-[aurora-shift_7s_ease-in-out_infinite] font-bold">
+            ACTION
+          </span>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {demos.map((demo, index) => (
             <div
               key={index}
@@ -82,12 +85,12 @@ export function SystemDemos() {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center transform transition-transform duration-500 group-hover:scale-110">
                       <div className={cn(
-                        "w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#FF9A76]/20 to-[#FFB6A3]/20 flex items-center justify-center transition-all duration-500",
+                        "w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-[#FF9A76]/20 to-[#FFB6A3]/20 flex items-center justify-center transition-all duration-500",
                         hoveredIndex === index && "bg-gradient-to-br from-[#FF9A76]/30 to-[#FFB6A3]/30 scale-110 shadow-lg shadow-[#FF9A76]/20"
                       )}>
                         <svg
                           className={cn(
-                            "w-10 h-10 text-[#FF9A76] transition-transform duration-500",
+                            "w-8 h-8 text-[#FF9A76] transition-transform duration-500",
                             hoveredIndex === index && "scale-110"
                           )}
                           fill="currentColor"
@@ -96,7 +99,7 @@ export function SystemDemos() {
                           <path d="M8 5v14l11-7z" />
                         </svg>
                       </div>
-                      <p className="text-sm text-muted-foreground font-medium">Video Demo</p>
+                      <p className="text-xs text-muted-foreground font-medium">Video Demo</p>
                     </div>
                   </div>
 
@@ -118,11 +121,11 @@ export function SystemDemos() {
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                <div className="p-5">
+                  <h3 className="text-base font-semibold text-foreground mb-1.5">
                     {demo.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {demo.description}
                   </p>
                 </div>
