@@ -4,16 +4,20 @@ import { useEffect, useState } from "react"
 
 import { cn } from "@/lib/utils"
 
+type AuroraTextWord = string | { text: string; bold?: boolean }
+
 type AuroraTextProps = {
-  words: string[]
+  words: AuroraTextWord[]
   intervalMs?: number
   className?: string
+  bold?: boolean
 }
 
 export function AuroraText({
   words,
   intervalMs = 3200,
   className,
+  bold = false,
 }: AuroraTextProps) {
   const [index, setIndex] = useState(0)
 
@@ -25,14 +29,20 @@ export function AuroraText({
     return () => window.clearInterval(id)
   }, [intervalMs, words.length])
 
+  const currentWord = words[index]
+  const wordText = typeof currentWord === 'string' ? currentWord : currentWord.text
+  const wordBold = typeof currentWord === 'object' ? currentWord.bold : undefined
+  const isBold = wordBold !== undefined ? wordBold : bold
+
   return (
     <span
       className={cn(
-        "aurora-text-gradient inline-flex items-center bg-[linear-gradient(120deg,#60a5fa,#a855f7,#f472b6,#f97316,#60a5fa)] bg-clip-text text-transparent",
+        "aurora-text-gradient inline-flex items-center bg-[linear-gradient(120deg,#FF9A76,#FFB6A3,#FF9A76,#FFB6A3,#FF9A76)] bg-clip-text text-transparent",
+        isBold && "font-bold",
         className
       )}
     >
-      {words[index] ?? ""}
+      {wordText}
     </span>
   )
 }

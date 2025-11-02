@@ -11,6 +11,8 @@ import LogoMarquee from "../components/LogoMarquee";
 import { RetroGrid } from "@/components/ui/retro-grid";
 import { LineShadowText } from "@/components/ui/line-shadow-text";
 import { AuroraText } from "@/components/ui/aurora-text";
+import { ProcessBeam } from "../components/ProcessBeam";
+import { SystemDemos } from "../components/SystemDemos";
 
 const openSans = Open_Sans({ subsets: ["latin"], weight: ["400", "600"], display: "swap" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["700", "800"], display: "swap" });
@@ -41,8 +43,13 @@ function Header() {
   return (
     <header
       className={`sticky top-0 z-50 transition-all ${
-        atTop ? "bg-gradient-to-r from-white/90 to-white/80 backdrop-blur-2xl backdrop-saturate-150 rounded-full mx-6 mt-6 shadow-2xl border border-black/10" : "bg-gradient-to-r from-white/90 to-white/80 backdrop-blur-2xl backdrop-saturate-150 rounded-full mx-6 mt-6 shadow-2xl border border-black/10"
+        atTop ? "bg-gradient-to-r from-white/90 to-white/80 backdrop-blur-2xl backdrop-saturate-150 rounded-full mx-6 mt-6" : "bg-gradient-to-r from-white/90 to-white/80 backdrop-blur-2xl backdrop-saturate-150 rounded-full mx-6 mt-6"
       }`}
+      style={{
+        boxShadow: atTop
+          ? '0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+          : '0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+      }}
     >
       <div className="mx-auto max-w-[650px] px-5 py-3 flex items-center justify-between">
         <Link href="#" aria-label="Sun Bloom AI" className="flex items-center gap-2">
@@ -133,7 +140,7 @@ function Hero() {
   }, [outcomes.length]);
   return (
     <section
-      className="relative -mt-16 pt-6 border-b border-[var(--border)] overflow-hidden"
+      className="relative -mt-16 pt-6 overflow-hidden"
       onMouseMove={(e) => {
         if (reduceMotion) return;
         const r = e.currentTarget.getBoundingClientRect();
@@ -142,11 +149,11 @@ function Hero() {
         setSpot({ x, y });
       }}
       style={{
-        background: `radial-gradient(600px circle at ${spot.x}% ${spot.y}%, rgba(245,192,68,.08), transparent 45%)`,
+        background: `radial-gradient(600px circle at ${spot.x}% ${spot.y}%, rgba(255, 154, 118, 0.08), transparent 45%)`,
       }}
     >
       <RetroGrid className="opacity-30" />
-      <div className="mx-auto max-w-[1200px] px-5 py-24 md:py-28 lg:py-32 relative z-10">
+      <div className="mx-auto max-w-[1200px] px-5 py-16 md:py-20 lg:py-22 relative z-10">
         <div className="flex flex-col items-center gap-12">
           <div className="flex flex-col items-center gap-8 max-w-4xl text-center reveal">
             <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-3 py-1 text-xs text-muted-foreground">
@@ -159,13 +166,14 @@ function Hero() {
             >
               You still don't have AI Agents
             </LineShadowText>
-            <div className="flex items-center justify-center gap-3 text-balance">
+            <div className="flex items-center justify-center gap-3 -mt-2">
               <AuroraText
-                className="text-[2.25rem] leading-tight md:text-[3.25rem] lg:text-[4rem]"
+                className="text-[2.25rem] leading-tight md:text-[3.25rem] lg:text-[4rem] whitespace-nowrap"
+                bold={true}
                 words={[
                   "Bulk calling your List",
                   "Screening your Candidates",
-                  "Doing Personalised Lead Generation",
+                  "Doing Email Lead Generation",
                   "Doing Cold Calls",
                   "Doing Appointment Bookings",
                 ]}
@@ -267,12 +275,12 @@ function Outcomes() {
     { label: "Lead response rate", end: 42, showPlus: true },
   ];
   return (
-    <section id="outcomes" className="bg-muted border-y border-[var(--border)]">
+    <section id="outcomes" className="bg-[#F7F5F0]">
       <div className="mx-auto max-w-[1200px] px-5 pt-12 md:pt-16 pb-14 grid grid-cols-1 sm:grid-cols-3 gap-6">
         {items.map((m, i) => (
           <div
             key={m.label}
-            className="rounded-xl bg-muted p-6 border border-[var(--border)] reveal"
+            className="rounded-xl bg-white p-6 reveal"
             style={{ transitionDelay: `${i * 80}ms` }}
           >
             <div className="text-3xl md:text-4xl font-semibold">
@@ -385,7 +393,7 @@ function UseCases() {
   }, [activeService]);
 
   return (
-    <section id="use-cases">
+    <section id="use-cases" className="bg-[#F7F5F0]">
       <div className="mx-auto max-w-[1200px] px-5 pt-8 pb-24">
         <div className="flex items-end justify-between gap-6 mb-10">
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">Our Services</h2>
@@ -591,67 +599,16 @@ function UseCases() {
 }
 
 function Process() {
-  const steps = [
-    { title: "Assess", desc: "Map goals, guardrails, and success metrics." },
-    { title: "Prototype", desc: "Ship a working agent in days, not weeks." },
-    { title: "Deploy & Operate", desc: "Train, monitor, and iterate with SLAs." },
-  ];
   return (
-    <section id="process" className="border-y border-[var(--border)]">
-      <div className="mx-auto max-w-[1200px] px-5 py-24">
-        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-10">How it works</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {steps.map((s, i) => (
-            <div
-              key={s.title}
-              className="p-6 rounded-xl border border-[var(--border)] bg-muted reveal"
-              style={{ transitionDelay: `${i * 90}ms` }}
-            >
-              <div className="text-xs text-muted-foreground">Step {i + 1}</div>
-              <div className="mt-2 text-lg font-medium">{s.title}</div>
-              <p className="mt-2 text-sm text-muted-foreground">{s.desc}</p>
-            </div>
-          ))}
-        </div>
-        <div className="mt-8">
-          <a
-            href="https://calendly.com/anmol-sunbloomai/30min"
-            className="btn btn-primary"
-            onClick={openCalendlyPopup}
-            onMouseMove={(e) => {
-              const r = (e.currentTarget as HTMLAnchorElement).getBoundingClientRect();
-              const x = ((e.clientX - r.left) / r.width) * 100;
-              const y = ((e.clientY - r.top) / r.height) * 100;
-              (e.currentTarget as HTMLElement).style.setProperty("--x", `${x}%`);
-              (e.currentTarget as HTMLElement).style.setProperty("--y", `${y}%`);
-            }}
-            rel="noopener noreferrer"
-          >
-            Book a strategy call
-          </a>
-        </div>
+    <section id="process">
+      <div className="mx-auto max-w-[1200px] px-5 py-16">
+        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-8 text-center">How it works</h2>
+        <ProcessBeam />
       </div>
     </section>
   );
 }
 
-function LogoCloud() {
-  const logos = ["Acme", "Northstar", "Helio", "Strata", "Nimbus"];
-  return (
-    <section className="bg-muted border-b border-[var(--border)]">
-      <div className="mx-auto max-w-[1200px] px-5 py-12">
-        <div className="text-sm text-muted-foreground mb-6">Trusted by teams who value reliability</div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 items-center">
-          {logos.map((name) => (
-            <div key={name} className="h-10 rounded-md border border-[var(--border)] bg-muted flex items-center justify-center text-xs text-muted-foreground logo-shimmer">
-              {name}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 // Contact section was removed to avoid duplicating the footer content
 
@@ -675,7 +632,7 @@ function FAQ() {
     },
   ];
   return (
-    <section id="faq" className="border-t border-[var(--border)]">
+    <section id="faq">
       <div className="mx-auto max-w-[900px] px-5 py-24">
         <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-8">FAQ</h2>
         <div className="divide-y divide-[var(--border)]">
@@ -723,7 +680,7 @@ export default function Landing() {
         <UseCases />
         {/* Contact removed */}
         <Process />
-        <LogoCloud />
+        <SystemDemos />
         <FAQ />
       </main>
       {/* Footer rendered globally in RootLayout */}
