@@ -164,21 +164,21 @@
 }
 .btn-primary {
   position: relative;
-  overflow: hidden;
-  color: var(--accent-foreground);
-  background: var(--accent);
+  color: white;
+  background: linear-gradient(135deg, #FF6B1A, #FF8C42);
+  background-size: 100% 100%;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 10px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1.05);
 }
-.btn-primary::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(circle at var(--x,50%) var(--y,50%), rgba(255, 154, 118, 0.35), transparent 40%);
-  opacity: 0;
-  transition: opacity 220ms ease;
-  pointer-events: none;
-}
-.btn-primary:hover::after { opacity: 1; }
+/* Removed the ::after pseudo-element that was causing text to disappear on hover */
 .btn-strategy {
   position: relative;
   overflow: hidden;
@@ -236,17 +236,38 @@
   }
 }
 
-/* Rainbow Button - Solid color with rainbow bottom effect */
+/* Clean 3D Button - Professional elevation */
 .rainbow-button-solid {
-  background: var(--accent) !important;
-  background-image: none !important;
-  background-clip: padding-box !important;
-  border: 2px solid transparent !important;
+  background: linear-gradient(135deg, #FF6B1A, #FF8C42) !important;
+  background-size: 100% 100% !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.1) !important;
+  color: white !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  transform: scale(1.05) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
 }
 
 .rainbow-button-solid:hover {
-  background: color-mix(in srgb, var(--accent) 90%, transparent) !important;
+  background: linear-gradient(135deg, #FF7A33, #FF9C52) !important;
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.2),
+    0 6px 16px rgba(0, 0, 0, 0.15),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.15) !important;
+  color: white !important;
+  transform: scale(1.08) !important;
 }
+
+/* Removed rainbow glow effects for clean 3D appearance */
+
+/* Removed complex animations for clean 3D button appearance */
 
 .btn-outline {
   border: 1px solid var(--border);

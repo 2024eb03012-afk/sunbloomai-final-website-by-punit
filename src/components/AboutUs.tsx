@@ -17,7 +17,7 @@ const founders: Founder[] = [
     title: "Co-Founder",
     description: "Hi, I'm Anmol Malik, pursuing a BS in Computer Science with a specialization in AI/ML. I'm an AI agent developer passionate about building smart solutions using tools like n8n, Vapi, and custom Python-coded agents. With a strong foundation in tech and a creative mindset, I'm actively exploring the startup world. I enjoy content creation on LinkedIn, Medium, and Instagram - sharing insights on AI, entrepreneurship, and personal growth. My interests also include the stock market, science, and philosophy. I'm focused on launching impactful startups, expanding my network, and continuously learning new skills in AI and digital innovation. Let's connect and build something great!",
     linkedinUrl: "https://www.linkedin.com/in/anmolzenquill",
-    instagramUrl: "https://www.instagram.com/ai_aur_anmol",
+    instagramUrl: "https://www.instagram.com/agenticanmol",
     imageUrl: "/anmol.jpeg",
   },
   {

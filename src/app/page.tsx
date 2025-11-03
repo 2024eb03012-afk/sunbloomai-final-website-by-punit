@@ -156,7 +156,7 @@ function Hero() {
                 asChild
                 size="lg"
                 variant="default"
-                className="rainbow-button-solid h-12 px-8 text-base font-semibold rounded-lg text-white hover:scale-105 transition-all duration-200 shadow-lg"
+                className="rainbow-button-solid h-14 px-10 text-lg font-semibold rounded-lg text-white hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 <a
                   href="https://calendly.com/anmol-sunbloomai/30min"
