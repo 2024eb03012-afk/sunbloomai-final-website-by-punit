@@ -8,6 +8,12 @@ export default function Footer() {
           <div className="space-y-3">
             <div className="text-sm text-muted-foreground">© {new Date().getFullYear()} Sunbloom AI</div>
             <div className="text-sm text-muted-foreground">Built for reliability and ROI.</div>
+            <div className="text-sm text-muted-foreground">
+              Email us: {" "}
+              <a href="mailto:sunbloomai@gmail.com" className="font-medium text-foreground hover:underline">
+                sunbloomai@gmail.com
+              </a>
+            </div>
           </div>
           <div className="flex md:justify-end items-center gap-4">
             <a

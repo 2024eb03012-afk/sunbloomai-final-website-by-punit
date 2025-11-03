@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-// Using the existing icon.png for favicon
+// Favicon updated to use the branded sunbloom logo asset
 import Script from "next/script";
 import Footer from "../components/Footer";
 import ElevenLabsConvAI from "../components/ElevenLabsConvAI";
@@ -32,9 +32,9 @@ export const metadata: Metadata = {
     locale: "en_US",
   },
   icons: {
-    icon: "/sunbloom-ai.png",
-    apple: "/sunbloom-ai.png",
-    shortcut: "/sunbloom-ai.png",
+    icon: "/sunbloomlogo%20removed%20bg.png",
+    apple: "/sunbloomlogo%20removed%20bg.png",
+    shortcut: "/sunbloomlogo%20removed%20bg.png",
   },
 };
 

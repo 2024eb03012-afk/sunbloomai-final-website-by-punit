@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 
 interface VideoDemo {
@@ -28,8 +28,64 @@ const demos: VideoDemo[] = [
   },
 ]
 
+const getEmbedUrl = (url?: string) => {
+  if (!url) return null
+  try {
+    const parsed = new URL(url)
+    const host = parsed.hostname.replace("www.", "")
+    if (host === "youtu.be") {
+      const id = parsed.pathname.replace("/", "")
+      return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0` : null
+    }
+    if (host.includes("youtube.com")) {
+      const id = parsed.searchParams.get("v")
+      if (id) {
+        return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`
+      }
+    }
+  } catch (error) {
+    return url
+  }
+  return url
+}
+
+const getVideoId = (url?: string) => {
+  if (!url) return null
+  try {
+    const parsed = new URL(url)
+    const host = parsed.hostname.replace("www.", "")
+    if (host === "youtu.be") {
+      const id = parsed.pathname.replace("/", "")
+      return id
+    }
+    if (host.includes("youtube.com")) {
+      const id = parsed.searchParams.get("v")
+      return id
+    }
+  } catch (error) {
+    return null
+  }
+  return null
+}
+
+const getThumbnailUrl = (videoId: string) => {
+  return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+}
+
 export function SystemDemos() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [activeDemoIndex, setActiveDemoIndex] = useState<number | null>(null)
+  const activeDemo = activeDemoIndex !== null ? demos[activeDemoIndex] : null
+  const embedUrl = activeDemo?.videoUrl ? getEmbedUrl(activeDemo.videoUrl) : null
+
+  useEffect(() => {
+    if (!activeDemo) return
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = originalOverflow
+    }
+  }, [activeDemo])
 
   return (
     <section className="py-12 md:py-16" style={{ backgroundColor: '#FFF3E0' }}>
@@ -81,10 +137,28 @@ export function SystemDemos() {
 
                 {/* Video container */}
                 <div
-                  className="relative aspect-video bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 overflow-hidden cursor-pointer"
-                  onClick={() => demo.videoUrl && window.open(demo.videoUrl, '_blank')}
+                  className="relative aspect-video overflow-hidden cursor-pointer"
+                  onClick={() => demo.videoUrl && setActiveDemoIndex(index)}
                 >
-                  {/* Placeholder or video */}
+                  {/* YouTube thumbnail */}
+                  {(() => {
+                    const videoId = getVideoId(demo.videoUrl)
+                    const thumbnailUrl = videoId ? getThumbnailUrl(videoId) : null
+
+                    return thumbnailUrl ? (
+                      <img
+                        src={thumbnailUrl}
+                        alt={`${demo.title} thumbnail`}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    ) : (
+                      // Fallback to grey background if no thumbnail available
+                      <div className="w-full h-full bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200" />
+                    )
+                  })()}
+
+                  {/* Play button overlay */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center transform transition-transform duration-500 group-hover:scale-110">
                       <div className={cn(
@@ -104,14 +178,6 @@ export function SystemDemos() {
                       </div>
                       <p className="text-xs text-muted-foreground font-medium">Watch Demo</p>
                     </div>
-                  </div>
-
-                  {/* Animated background pattern */}
-                  <div className="absolute inset-0 opacity-5">
-                    <div className="absolute inset-0" style={{
-                      backgroundImage: "radial-gradient(circle at 2px 2px, #FF9A76 1px, transparent 0)",
-                      backgroundSize: "24px 24px",
-                    }} />
                   </div>
 
                   {/* Hover overlay */}
@@ -152,6 +218,39 @@ export function SystemDemos() {
           ))}
         </div>
       </div>
+      {activeDemo && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-10"
+          onClick={() => setActiveDemoIndex(null)}
+        >
+          <div
+            className="relative w-full max-w-3xl overflow-hidden rounded-2xl bg-black shadow-[0_20px_60px_rgba(0,0,0,0.35)] aspect-video"
+            onClick={(event) => event.stopPropagation()}
+          >
+            {embedUrl ? (
+              <iframe
+                src={embedUrl}
+                title={activeDemo.title}
+                className="h-full w-full aspect-video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-white text-sm">
+                Unable to load this video.
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={() => setActiveDemoIndex(null)}
+              className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-black shadow-md transition hover:bg-white"
+              aria-label="Close video"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

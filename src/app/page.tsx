@@ -16,6 +16,7 @@ import { SystemDemos } from "../components/SystemDemos";
 import { Testimonials } from "../components/Testimonials";
 import { AboutUs } from "../components/AboutUs";
 import { RainbowButton } from "@/components/ui/rainbow-button";
+import { AvatarCircles } from "@/components/ui/avatar-circles";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["700", "800"], display: "swap" });
 
@@ -90,6 +91,11 @@ function Hero() {
     "+28% inbound conversion",
     "+42% lead response rate",
   ];
+  const communityAvatars = [
+    { imageUrl: "/randomperson1_icon.png", profileUrl: "" },
+    { imageUrl: "/randomperson2_icon.png", profileUrl: "" },
+    { imageUrl: "/randomperson3_icon.png", profileUrl: "" },
+  ];
   const [idx, setIdx] = useState(0);
   const [spot, setSpot] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
   const reduceMotion = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -117,13 +123,14 @@ function Hero() {
       <div className="mx-auto max-w-[1200px] px-5 py-13 md:py-16 lg:py-18 relative z-10">
         <div className="flex flex-col items-center gap-10">
           <div className="flex flex-col items-center gap-6 max-w-4xl text-center reveal">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-3 py-1 text-xs text-muted-foreground">
+            <div className="inline-flex items-center justify-center gap-3 rounded-full border border-[var(--border)] px-3 py-1 text-xs text-muted-foreground">
+              <AvatarCircles avatarUrls={communityAvatars} numPeople="50K" />
               <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-              Bespoke AI agents as a service
+              Trusted by 50K+ AI Learners
             </div>
             <LineShadowText
               as="h1"
-              className="text-2xl sm:text-3xl md:text-5xl font-semibold tracking-tight whitespace-nowrap"
+              className={`${poppins.className} text-2xl sm:text-3xl md:text-5xl font-semibold tracking-tight whitespace-nowrap`}
             >
               You still don&apos;t have AI Agents
             </LineShadowText>
@@ -336,10 +343,12 @@ function UseCases() {
                   </div>
                   <motion.h3 
                     layoutId={`service-title-${idx}-${id}`} 
-                    className="mt-4 text-lg font-medium text-foreground"
+                    className="mt-4 text-lg font-bold text-foreground"
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
-                    {service.title}
+                    <span className="inline-block rounded-lg bg-gradient-to-r from-[#FFE4D1] via-[#FFD8C2] to-[#FFCAB3] px-3 py-1 shadow-sm">
+                      {service.title}
+                    </span>
                   </motion.h3>
                   <motion.p 
                     layoutId={`service-desc-${idx}-${id}`} 
@@ -413,10 +422,12 @@ function UseCases() {
                 </div>
                 <motion.h3 
                   layoutId={`service-title-${activeIdx}-${id}`} 
-                  className="service-modal-title"
+                  className="service-modal-title font-bold"
                   transition={{ duration: 0.2, ease: "easeOut" }}
                 >
-                  {activeService.title}
+                  <span className="inline-block rounded-xl bg-gradient-to-r from-[#FFE4D1] via-[#FFD8C2] to-[#FFCAB3] px-4 py-1.5 shadow-sm">
+                    {activeService.title}
+                  </span>
                 </motion.h3>
                 <motion.p 
                   layoutId={`service-desc-${activeIdx}-${id}`} 

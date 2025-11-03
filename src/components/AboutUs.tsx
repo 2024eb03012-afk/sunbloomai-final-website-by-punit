@@ -68,6 +68,12 @@ export function AboutUs() {
               <div className="relative z-0 text-center mb-4">
                 <h3 className="text-xl font-semibold text-gray-900 mb-1">{founder.name}</h3>
                 <p className="text-sm text-muted-foreground">{founder.title}</p>
+                {founder.name === "Anmol Malik" && (
+                  <p className="text-xs text-[#FF9A76] font-medium mt-1">37K+ Instagram Followers</p>
+                )}
+                {founder.name === "Punit Gupta" && (
+                  <p className="text-xs text-[#FF9A76] font-medium mt-1">12K+ Instagram Followers</p>
+                )}
               </div>
               
               {/* Description */}

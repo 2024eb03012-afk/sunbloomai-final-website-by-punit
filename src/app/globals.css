@@ -713,6 +713,32 @@ details[open] summary .faq-indicator { transform: rotate(45deg); }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: transform 180ms ease-out, box-shadow 180ms ease-out, opacity 180ms ease-out;
+  transform: perspective(1100px) rotateX(var(--testimonial-tilt-x, 0deg)) rotateY(var(--testimonial-tilt-y, 0deg)) translateY(var(--testimonial-lift, 0px));
+  --testimonial-lift: 0px;
+}
+
+.testimonial-card:hover {
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 8px 20px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 -2px 8px rgba(255, 154, 118, 0.08);
+  --testimonial-lift: -10px;
+}
+
+.testimonial-card:hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #FF9A76, #FFB6A3, #FF9A76);
+  border-radius: 1.35rem 1.35rem 0 0;
+  opacity: 0.8;
+  z-index: 2;
+  animation: gradientShift 3s ease-in-out infinite;
 }
 
 .testimonial-card blockquote {
@@ -721,11 +747,13 @@ details[open] summary .faq-indicator { transform: rotate(45deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .testimonial-card {
-    transition: none;
+  .testimonial-card,
+  .testimonial-card::before {
+    animation: none !important;
+    transition: none !important;
   }
-  .testimonial-card:hover {
-    transform: none;
+  .testimonial-card {
+    transform: none !important;
   }
 }
 
