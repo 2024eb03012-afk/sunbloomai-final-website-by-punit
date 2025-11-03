@@ -26,7 +26,7 @@ const founders: Founder[] = [
     description: "Hi, I'm Punit Gupta - I'm pursuing a B.S. in Computer Science with a specialization in AI/ML from BITS Pilani, and I build powerful AI agents that help businesses automate tasks, save time, and grow faster. I specialize in voice AI agents, WhatsApp bots, email automation, and workflow automation using tools like n8n, OpenAI, Retell AI, and APIs. I share practical tutorials and demos on LinkedIn and Instagram, aiming to help 100+ startups automate their operations by year-end.",
     linkedinUrl: "https://www.linkedin.com/in/punit-kumar-402252287",
     instagramUrl: "https://www.instagram.com/aspirenest0b9",
-    imageUrl: "/punit.png",
+    imageUrl: "/punit.jpeg",
   },
 ];
 
@@ -72,7 +72,7 @@ export function AboutUs() {
                   <p className="text-xs text-[#FF9A76] font-medium mt-1">37K+ Instagram Followers</p>
                 )}
                 {founder.name === "Punit Gupta" && (
-                  <p className="text-xs text-[#FF9A76] font-medium mt-1">12K+ Instagram Followers</p>
+                  <p className="text-xs text-[#FF9A76] font-medium mt-1">14K+ Instagram Followers</p>
                 )}
               </div>
               

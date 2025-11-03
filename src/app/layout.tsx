@@ -33,9 +33,9 @@ export const metadata: Metadata = {
     locale: "en_US",
   },
   icons: {
-    icon: "/sunbloomlogo%20removed%20bg.png",
-    apple: "/sunbloomlogo%20removed%20bg.png",
-    shortcut: "/sunbloomlogo%20removed%20bg.png",
+    icon: "/sunbloomlogo removed bg.png",
+    apple: "/sunbloomlogo removed bg.png",
+    shortcut: "/sunbloomlogo removed bg.png",
   },
 };
 
