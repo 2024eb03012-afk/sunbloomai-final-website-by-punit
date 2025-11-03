@@ -124,7 +124,7 @@ function Hero() {
         <div className="flex flex-col items-center gap-10">
           <div className="flex flex-col items-center gap-6 max-w-4xl text-center reveal">
             <div className="inline-flex items-center justify-center gap-3 rounded-full border border-[var(--border)] px-3 py-1 text-xs text-muted-foreground">
-              <AvatarCircles avatarUrls={communityAvatars} numPeople="50K" />
+              <AvatarCircles avatarUrls={communityAvatars} numPeople={50} />
               <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
               Trusted by 50K+ AI Learners
             </div>

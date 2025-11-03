@@ -176,7 +176,7 @@
   border-radius: 10px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: scale(1.05);
+  transform: scale(1.00);
 }
 /* Removed the ::after pseudo-element that was causing text to disappear on hover */
 .btn-strategy {
@@ -249,7 +249,7 @@
     inset 0 -2px 0 rgba(0, 0, 0, 0.1) !important;
   color: white !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
-  transform: scale(1.05) !important;
+  transform: scale(1.00) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   position: relative !important;
 }
