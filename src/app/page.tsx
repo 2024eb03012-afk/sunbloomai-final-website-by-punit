@@ -57,7 +57,7 @@ function Header() {
       <div className="mx-auto max-w-[650px] px-5 py-3 flex items-center justify-between">
         <Link href="#" aria-label="Sun Bloom AI" className="flex items-center gap-2">
           <Image src="/sunbloom-ai.png" alt="Sun Bloom AI logo" width={28} height={28} priority />
-          <span className={`${poppins.className} text-lg font-bold tracking-tight lowercase text-foreground`}>SunbloomAI</span>
+          <span className={`${poppins.className} text-lg font-bold tracking-tight text-foreground`}>SunbloomAI</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm font-bold text-foreground">
           <a href="#" className="hover:text-foreground">Home</a>
