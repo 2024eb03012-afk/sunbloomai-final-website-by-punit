@@ -26,7 +26,7 @@ type CalendlyWindow = Window & {
 
 function openCalendlyPopup(e: React.MouseEvent<HTMLAnchorElement>) {
   e.preventDefault();
-  const url = "https://calendly.com/anmol-sunbloomai/30min";
+  const url = "https://calendly.com/ai-agentix5733/30min";
   const w = window as unknown as CalendlyWindow;
   if (w.Calendly && typeof w.Calendly.initPopupWidget === "function") {
     w.Calendly.initPopupWidget({ url });
@@ -65,7 +65,7 @@ function Header() {
           <a href="#outcomes" className="hover:text-foreground">Testimonial</a>
           <a href="#process" className="hover:text-foreground">About us</a>
           <a
-            href="https://calendly.com/anmol-sunbloomai/30min"
+            href="https://calendly.com/ai-agentix5733/30min"
             className="btn btn-primary"
             onClick={openCalendlyPopup}
             onMouseMove={(e) => {
@@ -159,7 +159,7 @@ function Hero() {
                 className="rainbow-button-solid h-14 px-10 text-lg font-semibold rounded-lg text-white hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 <a
-                  href="https://calendly.com/anmol-sunbloomai/30min"
+                  href="https://calendly.com/ai-agentix5733/30min"
                   onClick={openCalendlyPopup}
                   rel="noopener noreferrer"
                 >
@@ -288,7 +288,7 @@ function UseCases() {
         <div className="flex items-end justify-between gap-6 mb-10">
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">Our Services</h2>
           <a
-            href="https://calendly.com/anmol-sunbloomai/30min"
+            href="https://calendly.com/ai-agentix5733/30min"
             className="text-sm text-muted-foreground hover:text-foreground"
             onClick={openCalendlyPopup}
             rel="noopener noreferrer"
@@ -448,7 +448,7 @@ function UseCases() {
                 </div>
                 <div className="service-modal-actions">
                   <a
-                    href="https://calendly.com/anmol-sunbloomai/30min"
+                    href="https://calendly.com/ai-agentix5733/30min"
                     className="btn btn-primary"
                     onClick={(linkEvent) => {
                       setActiveIdx(null);
@@ -472,7 +472,7 @@ function UseCases() {
         </AnimatePresence>
         <div className="mt-8">
           <a
-            href="https://calendly.com/anmol-sunbloomai/30min"
+            href="https://calendly.com/ai-agentix5733/30min"
             className="btn btn-primary"
             onClick={openCalendlyPopup}
             onMouseMove={(e) => {
