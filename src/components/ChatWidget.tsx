@@ -37,9 +37,18 @@ function createId() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
 
+function createSessionId() {
+  // Create a unique session ID for this chat session
+  // Format: session_timestamp_random
+  const timestamp = Date.now().toString(36);
+  const random = Math.random().toString(36).slice(2, 9);
+  return `session_${timestamp}_${random}`;
+}
+
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
+  const sessionIdRef = useRef(createSessionId()); // Create session ID once per component mount
   const [messages, setMessages] = useState<ChatMessage[]>(() => [
     {
       id: createId(),
@@ -105,6 +114,7 @@ export function ChatWidget() {
           message: trimmed,
           chatInput: trimmed, // Some n8n workflows use this
           history: history.length > 0 ? history : [],
+          sessionId: sessionIdRef.current, // Session ID for maintaining conversation context in n8n
         };
 
         let response: Response;
