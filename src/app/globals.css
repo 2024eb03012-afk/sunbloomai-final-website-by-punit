@@ -44,6 +44,54 @@
   --color-5: oklch(90.7% 0.231 133);
 }
 
+/* n8n Chat widget theming – aligned with Sunbloom palette */
+:root {
+  --chat--color--primary: #ff9a76;
+  --chat--color--primary-shade-50: #ff8c5f;
+  --chat--color--primary--shade-100: #ff7b42;
+  --chat--color--secondary: #f97316;
+  --chat--color-secondary-shade-50: #ea580c;
+  --chat--color-white: #ffffff;
+  --chat--color-light: #faf9f6;
+  --chat--color-light-shade-50: #f3eee6;
+  --chat--color-light-shade-100: #e2d8c9;
+  --chat--color-medium: #d9d6cf;
+  --chat--color-dark: #111827;
+  --chat--color-disabled: #9ca3af;
+  --chat--color-typing: #4b5563;
+  --chat--spacing: 0.9rem;
+  --chat--border-radius: 1.25rem;
+  --chat--transition-duration: 0.18s;
+  --chat--window--width: 100%;
+  --chat--window--height: 100%;
+  --chat--header-height: auto;
+  --chat--header--padding: var(--chat--spacing);
+  --chat--header--background: linear-gradient(135deg, #ff9a76, #ffb6a3);
+  --chat--header--color: #111827;
+  --chat--header--border-top: none;
+  --chat--header--border-bottom: none;
+  --chat--heading--font-size: 1.1rem;
+  --chat--subtitle--font-size: 0.8rem;
+  --chat--subtitle--line-height: 1.6;
+  --chat--textarea--height: 56px;
+  --chat--message--font-size: 0.9rem;
+  --chat--message--padding: 0.7rem 0.85rem;
+  --chat--message--border-radius: 1.1rem;
+  --chat--message-line-height: 1.6;
+  --chat--message--bot--background: #ffffff;
+  --chat--message--bot--color: #111827;
+  --chat--message--bot--border: 1px solid rgba(15, 23, 42, 0.04);
+  --chat--message--user--background: #111827;
+  --chat--message--user--color: #ffffff;
+  --chat--message--user--border: none;
+  --chat--message--pre--background: rgba(0, 0, 0, 0.03);
+  --chat--toggle--background: #111827;
+  --chat--toggle--hover--background: #020617;
+  --chat--toggle--active--background: #020617;
+  --chat--toggle--color: #ffffff;
+  --chat--toggle--size: 56px;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -845,4 +893,61 @@ details[open] summary .faq-indicator { transform: rotate(45deg); }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Chat Widget Enhancements */
+#n8n-chat-container,
+[class*="chat"] {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 154, 118, 0.3) transparent;
+}
+
+#n8n-chat-container::-webkit-scrollbar,
+[class*="chat"]::-webkit-scrollbar {
+  width: 6px;
+}
+
+#n8n-chat-container::-webkit-scrollbar-track,
+[class*="chat"]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#n8n-chat-container::-webkit-scrollbar-thumb,
+[class*="chat"]::-webkit-scrollbar-thumb {
+  background: rgba(255, 154, 118, 0.3);
+  border-radius: 10px;
+}
+
+#n8n-chat-container::-webkit-scrollbar-thumb:hover,
+[class*="chat"]::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 154, 118, 0.5);
+}
+
+/* ElevenLabs ConvAI Widget Positioning - Above Chat Widget */
+elevenlabs-convai {
+  position: fixed !important;
+  bottom: 100px !important; /* Position above chat button (chat button is at bottom: 24px, ~48px tall = ~72px top, so 100px gives ~28px spacing) */
+  right: 16px !important; /* Align with chat widget on right side */
+  z-index: 30 !important; /* Lower than chat widget (z-40) */
+  margin: 0 !important;
+}
+
+/* Mobile responsiveness for ElevenLabs widget */
+@media (max-width: 768px) {
+  elevenlabs-convai {
+    bottom: 100px !important;
+    right: 12px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  elevenlabs-convai {
+    bottom: 100px !important;
+    right: 12px !important;
+  }
+}
+
+/* Ensure proper spacing between widgets */
+elevenlabs-convai + .fixed.bottom-6 {
+  margin-right: 0;
 }

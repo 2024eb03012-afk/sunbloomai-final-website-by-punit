@@ -18,7 +18,8 @@ export default function ElevenLabsConvAI() {
     // Create the custom element
     const widget = document.createElement("elevenlabs-convai");
     widget.setAttribute("agent-id", "agent_8301k38gytbte73rf32b92jj9q6c");
-    widget.setAttribute("position", "bottom-left");
+    widget.setAttribute("position", "bottom-right");
+    widget.style.setProperty("z-index", "30"); // Lower than chat widget (z-40)
     
     // Append to body
     document.body.appendChild(widget);
@@ -34,6 +35,9 @@ export default function ElevenLabsConvAI() {
 
   return null;
 }
+
+
+
 
 
 

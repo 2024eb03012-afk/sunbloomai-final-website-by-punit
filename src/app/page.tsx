@@ -17,6 +17,7 @@ import { Testimonials } from "../components/Testimonials";
 import { AboutUs } from "../components/AboutUs";
 import { RainbowButton } from "@/components/ui/rainbow-button";
 import { AvatarCircles } from "@/components/ui/avatar-circles";
+import { ChatWidget } from "../components/ChatWidget";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["700", "800"], display: "swap" });
 
@@ -582,6 +583,7 @@ export default function Landing() {
         <AboutUs />
         <FAQ />
       </main>
+      <ChatWidget />
       {/* Footer rendered globally in RootLayout */}
     </div>
   );
