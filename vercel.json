@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/app/:path*",
+      "destination": "https://linkedin-agent-zeta.vercel.app/app/:path*"
+    },
+    {
+      "source": "/app",
+      "destination": "https://linkedin-agent-zeta.vercel.app/app"
+    }
+  ]
+}
