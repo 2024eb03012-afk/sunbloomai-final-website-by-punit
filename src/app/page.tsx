@@ -57,7 +57,7 @@ function Header() {
     >
       <div className="mx-auto max-w-[650px] px-5 py-3 flex items-center justify-between">
         <Link href="#" aria-label="Sun Bloom AI" className="flex items-center gap-2">
-          <Image src="/sunbloom-ai.png" alt="Sun Bloom AI logo" width={28} height={28} priority />
+          <Image src="/sunbloomlogo.svg" alt="Sun Bloom AI logo" width={28} height={28} priority />
           <span className={`${poppins.className} text-lg font-bold tracking-tight text-foreground`}>SunbloomAI</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm font-bold text-foreground">
@@ -152,12 +152,12 @@ function Hero() {
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
               We build Premium AI agents that work the way your team does and drives revenue for your business. Solving Real Business Problems. With Real AI Employees.
             </p>
-            <div className="w-full flex justify-center">
+            <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4">
               <RainbowButton
                 asChild
                 size="lg"
                 variant="default"
-                className="rainbow-button-solid h-14 px-10 text-lg font-semibold rounded-lg text-white hover:scale-105 transition-all duration-200 shadow-lg"
+                className="rainbow-button-solid h-14 px-10 text-lg font-semibold rounded-lg text-white hover:scale-105 transition-all duration-200 shadow-lg w-full sm:w-auto"
               >
                 <a
                   href="https://calendly.com/sunbloomai/new-meeting"
@@ -166,6 +166,16 @@ function Hero() {
                 >
                   Book a strategy call
                 </a>
+              </RainbowButton>
+              <RainbowButton
+                asChild
+                size="lg"
+                variant="outline"
+                className="h-14 px-10 text-lg font-semibold rounded-lg hover:scale-105 transition-all duration-200 shadow-md w-full sm:w-auto"
+              >
+                <Link href="/app">
+                  Try Luke the writer now
+                </Link>
               </RainbowButton>
             </div>
             <div className="text-sm text-muted-foreground text-center">
@@ -471,10 +481,10 @@ function UseCases() {
             </>
           )}
         </AnimatePresence>
-        <div className="mt-8">
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-start gap-4">
           <a
             href="https://calendly.com/sunbloomai/new-meeting"
-            className="btn btn-primary"
+            className="btn btn-primary h-12 px-8 flex items-center justify-center"
             onClick={openCalendlyPopup}
             onMouseMove={(e) => {
               const r = (e.currentTarget as HTMLAnchorElement).getBoundingClientRect();
@@ -485,8 +495,18 @@ function UseCases() {
             }}
             rel="noopener noreferrer"
           >
-            Try now
+            Get a proposal
           </a>
+          <RainbowButton
+            asChild
+            size="lg"
+            variant="outline"
+            className="h-12 px-8 text-base font-semibold rounded-lg hover:scale-105 transition-all duration-200 shadow-md border-2"
+          >
+            <Link href="/app">
+              Try out "Luke the LinkedIn writer" now
+            </Link>
+          </RainbowButton>
         </div>
       </div>
     </section>
