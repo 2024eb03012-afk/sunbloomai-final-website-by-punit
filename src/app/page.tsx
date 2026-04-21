@@ -14,8 +14,9 @@ import { AuroraText } from "@/components/ui/aurora-text";
 import { ProcessBeam } from "../components/ProcessBeam";
 import { SystemDemos } from "../components/SystemDemos";
 import { Testimonials } from "../components/Testimonials";
-import { AboutUs } from "../components/AboutUs";
+import { Resources } from "../components/Resources";
 import { RainbowButton } from "@/components/ui/rainbow-button";
+import { Header } from "@/components/Header";
 import { AvatarCircles } from "@/components/ui/avatar-circles";
 import { ChatWidget } from "../components/ChatWidget";
 
@@ -27,7 +28,7 @@ type CalendlyWindow = Window & {
 
 function openCalendlyPopup(e: React.MouseEvent<HTMLAnchorElement>) {
   e.preventDefault();
-  const url = "https://calendly.com/sunbloomai/new-meeting";
+  const url = "https://cal.com/punit-gupta-grdgmd/30min";
   const w = window as unknown as CalendlyWindow;
   if (w.Calendly && typeof w.Calendly.initPopupWidget === "function") {
     w.Calendly.initPopupWidget({ url });
@@ -36,55 +37,7 @@ function openCalendlyPopup(e: React.MouseEvent<HTMLAnchorElement>) {
   }
 }
 
-function Header() {
-  const [atTop, setAtTop] = useState(true);
-  useEffect(() => {
-    const onScroll = () => setAtTop(window.scrollY < 16);
-    onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  return (
-    <header
-      className={`sticky top-0 z-50 transition-all ${
-        atTop ? "bg-gradient-to-r from-white/90 to-white/80 backdrop-blur-2xl backdrop-saturate-150 rounded-full mx-6 mt-6" : "bg-gradient-to-r from-white/90 to-white/80 backdrop-blur-2xl backdrop-saturate-150 rounded-full mx-6 mt-6"
-      }`}
-      style={{
-        boxShadow: atTop
-          ? '0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-          : '0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-      }}
-    >
-      <div className="mx-auto max-w-[650px] px-5 py-3 flex items-center justify-between">
-        <Link href="#" aria-label="Sun Bloom AI" className="flex items-center gap-2">
-          <Image src="/sunbloomlogo.svg" alt="Sun Bloom AI logo" width={28} height={28} priority />
-          <span className={`${poppins.className} text-lg font-bold tracking-tight text-foreground`}>SunbloomAI</span>
-        </Link>
-        <nav className="hidden md:flex items-center gap-6 text-sm font-bold text-foreground">
-          <a href="#" className="hover:text-foreground">Home</a>
-          <a href="#use-cases" className="hover:text-foreground">Service</a>
-          <a href="#outcomes" className="hover:text-foreground">Testimonial</a>
-          <a href="#process" className="hover:text-foreground">About us</a>
-          <a
-            href="https://calendly.com/sunbloomai/new-meeting"
-            className="btn btn-primary"
-            onClick={openCalendlyPopup}
-            onMouseMove={(e) => {
-              const r = (e.currentTarget as HTMLAnchorElement).getBoundingClientRect();
-              const x = ((e.clientX - r.left) / r.width) * 100;
-              const y = ((e.clientY - r.top) / r.height) * 100;
-              (e.currentTarget as HTMLElement).style.setProperty("--x", `${x}%`);
-              (e.currentTarget as HTMLElement).style.setProperty("--y", `${y}%`);
-            }}
-            rel="noopener noreferrer"
-          >
-            Talk with us
-          </a>
-        </nav>
-      </div>
-    </header>
-  );
-}
+
 
 function Hero() {
   const outcomes = [
@@ -125,9 +78,9 @@ function Hero() {
         <div className="flex flex-col items-center gap-10">
           <div className="flex flex-col items-center gap-6 max-w-4xl text-center reveal">
             <div className="inline-flex items-center justify-center gap-3 rounded-full border border-[var(--border)] px-3 py-1 text-xs text-muted-foreground">
-              <AvatarCircles avatarUrls={communityAvatars} numPeople={50} />
+              <AvatarCircles avatarUrls={communityAvatars} numPeople={100} />
               <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-              Trusted by 50K+ AI Learners
+              Trusted by 100K+ AI Learners
             </div>
             <LineShadowText
               as="h1"
@@ -160,22 +113,12 @@ function Hero() {
                 className="rainbow-button-solid h-14 px-10 text-lg font-semibold rounded-lg text-white hover:scale-105 transition-all duration-200 shadow-lg w-full sm:w-auto"
               >
                 <a
-                  href="https://calendly.com/sunbloomai/new-meeting"
+                  href="https://cal.com/punit-gupta-grdgmd/30min"
                   onClick={openCalendlyPopup}
                   rel="noopener noreferrer"
                 >
                   Book a strategy call
                 </a>
-              </RainbowButton>
-              <RainbowButton
-                asChild
-                size="lg"
-                variant="outline"
-                className="h-14 px-10 text-lg font-semibold rounded-lg hover:scale-105 transition-all duration-200 shadow-md w-full sm:w-auto"
-              >
-                <Link href="/app">
-                  Try Luke the writer now
-                </Link>
               </RainbowButton>
             </div>
             <div className="text-sm text-muted-foreground text-center">
@@ -191,6 +134,18 @@ function Hero() {
 
 function UseCases() {
   const services = [
+    {
+      title: "Custom AI Solutions",
+      desc: "We design and build tailored AI systems based on your business needs — from automation workflows to fully integrated AI agents.",
+      details: "Whether it’s operations, customer support, or internal tools, we create solutions that fit your exact use case and scale with your growth.",
+      tag: "Custom AI",
+      highlights: [
+        "Tailored AI systems designed specifically for your unique business logic",
+        "From simple automation workflows to fully integrated autonomous AI agents",
+        "Streamline your operations, customer support, and internal productivity tools",
+        "Scalable AI architecture that grows frictionlessly alongside your business needs",
+      ],
+    },
     {
       title: "Custom AI Calling Voice Agents",
       desc: "We build inbound and outbound AI voice agents tailored to your business needs — designed to handle customer conversations just like a real human agent.",
@@ -299,7 +254,7 @@ function UseCases() {
         <div className="flex items-end justify-between gap-6 mb-10">
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">Our Services</h2>
           <a
-            href="https://calendly.com/sunbloomai/new-meeting"
+            href="https://cal.com/punit-gupta-grdgmd/30min"
             className="text-sm text-muted-foreground hover:text-foreground"
             onClick={openCalendlyPopup}
             rel="noopener noreferrer"
@@ -317,7 +272,7 @@ function UseCases() {
                 layoutId={`service-card-${idx}-${id}`}
                 className={`service-card reveal ${isActive ? "service-card--expanded" : ""}`}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                style={{ 
+                style={{
                   opacity: isActive ? 0 : 1,
                   pointerEvents: isActive ? "none" : "auto"
                 }}
@@ -337,23 +292,23 @@ function UseCases() {
               >
                 <div className="flex h-full flex-col">
                   <div className="flex items-center justify-between gap-3 text-xs uppercase tracking-[0.14em]">
-                    <motion.span 
-                      layoutId={`service-tag-${idx}-${id}`} 
+                    <motion.span
+                      layoutId={`service-tag-${idx}-${id}`}
                       className="text-muted-foreground"
                       transition={{ duration: 0.2, ease: "easeOut" }}
                     >
                       {service.tag}
                     </motion.span>
-                    <motion.span 
-                      layoutId={`service-index-${idx}-${id}`} 
+                    <motion.span
+                      layoutId={`service-index-${idx}-${id}`}
                       className="text-muted-foreground/60"
                       transition={{ duration: 0.2, ease: "easeOut" }}
                     >
                       0{idx + 1}
                     </motion.span>
                   </div>
-                  <motion.h3 
-                    layoutId={`service-title-${idx}-${id}`} 
+                  <motion.h3
+                    layoutId={`service-title-${idx}-${id}`}
                     className="mt-4 text-lg font-bold text-foreground"
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
@@ -361,8 +316,8 @@ function UseCases() {
                       {service.title}
                     </span>
                   </motion.h3>
-                  <motion.p 
-                    layoutId={`service-desc-${idx}-${id}`} 
+                  <motion.p
+                    layoutId={`service-desc-${idx}-${id}`}
                     className="mt-3 text-sm leading-relaxed text-muted-foreground"
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
@@ -416,23 +371,23 @@ function UseCases() {
                   ✕
                 </button>
                 <div className="service-modal-header">
-                  <motion.span 
-                    layoutId={`service-tag-${activeIdx}-${id}`} 
+                  <motion.span
+                    layoutId={`service-tag-${activeIdx}-${id}`}
                     className="service-modal-tag"
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
                     {activeService.tag}
                   </motion.span>
-                  <motion.span 
-                    layoutId={`service-index-${activeIdx}-${id}`} 
+                  <motion.span
+                    layoutId={`service-index-${activeIdx}-${id}`}
                     className="service-modal-index"
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
                     0{activeIdx + 1}
                   </motion.span>
                 </div>
-                <motion.h3 
-                  layoutId={`service-title-${activeIdx}-${id}`} 
+                <motion.h3
+                  layoutId={`service-title-${activeIdx}-${id}`}
                   className="service-modal-title font-bold"
                   transition={{ duration: 0.2, ease: "easeOut" }}
                 >
@@ -440,8 +395,8 @@ function UseCases() {
                     {activeService.title}
                   </span>
                 </motion.h3>
-                <motion.p 
-                  layoutId={`service-desc-${activeIdx}-${id}`} 
+                <motion.p
+                  layoutId={`service-desc-${activeIdx}-${id}`}
                   className="service-modal-intro"
                   transition={{ duration: 0.2, ease: "easeOut" }}
                 >
@@ -483,7 +438,7 @@ function UseCases() {
         </AnimatePresence>
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-start gap-4">
           <a
-            href="https://calendly.com/sunbloomai/new-meeting"
+            href="https://cal.com/punit-gupta-grdgmd/30min"
             className="btn btn-primary h-12 px-8 flex items-center justify-center"
             onClick={openCalendlyPopup}
             onMouseMove={(e) => {
@@ -497,16 +452,6 @@ function UseCases() {
           >
             Get a proposal
           </a>
-          <RainbowButton
-            asChild
-            size="lg"
-            variant="outline"
-            className="h-12 px-8 text-base font-semibold rounded-lg hover:scale-105 transition-all duration-200 shadow-md border-2"
-          >
-            <Link href="/app">
-              Try out "Luke the LinkedIn writer" now
-            </Link>
-          </RainbowButton>
         </div>
       </div>
     </section>
@@ -600,7 +545,7 @@ export default function Landing() {
         <Process />
         <SystemDemos />
         <Testimonials />
-        <AboutUs />
+        <Resources />
         <FAQ />
       </main>
       <ChatWidget />

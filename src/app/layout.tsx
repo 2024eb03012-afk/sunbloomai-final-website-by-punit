@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import Footer from "../components/Footer";
 import ElevenLabsConvAI from "../components/ElevenLabsConvAI";
-import { SmoothCursor } from "../components/ui/smooth-cursor";
+
 import "./globals.css";
 
 const inter = Inter({
@@ -57,7 +57,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <ElevenLabsConvAI />
-        <SmoothCursor />
+
       </body>
     </html>
   );

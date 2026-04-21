@@ -11,6 +11,7 @@ interface Logo {
 
 const logos: Logo[] = [
   { src: "/Gemini New 2025.svg", alt: "Gemini", width: 110, height: 40 },
+  { src: "/claude.webp", alt: "Claude", width: 105, height: 40 },
   { src: "/n8n.io.svg", alt: "n8n", width: 95, height: 40 },
   { src: "/OpenAI.svg", alt: "OpenAI", width: 105, height: 40 },
   { src: "/retelllogo.png", alt: "Retell AI", width: 110, height: 40 },
@@ -40,7 +41,7 @@ export default function LogoMarquee() {
                   width={logo.width}
                   height={logo.height}
                   className={`object-contain transition-all duration-300 opacity-70 hover:opacity-100 ${
-                    logo.alt === "VAPI"
+                    logo.alt === "VAPI" || logo.alt === "Claude"
                       ? "grayscale hover:grayscale-0"
                       : "brightness-0"
                   }`}
@@ -60,7 +61,7 @@ export default function LogoMarquee() {
                   width={logo.width}
                   height={logo.height}
                   className={`object-contain transition-all duration-300 opacity-70 hover:opacity-100 ${
-                    logo.alt === "VAPI"
+                    logo.alt === "VAPI" || logo.alt === "Claude"
                       ? "grayscale hover:grayscale-0"
                       : "brightness-0"
                   }`}
