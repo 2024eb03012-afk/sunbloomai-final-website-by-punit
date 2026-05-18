@@ -42,7 +42,7 @@ export function Header() {
     >
       <div className="mx-auto max-w-[880px] px-6 py-3 flex items-center justify-between">
         <Link href="/" aria-label="Sun Bloom AI" className="flex items-center gap-2">
-          <Image src="/sunbloomlogo.svg" alt="Sun Bloom AI logo" width={28} height={28} priority />
+          <Image src="/sunbloom-logo.png" alt="Sun Bloom AI logo" width={28} height={28} priority />
           <span className={`${poppins.className} text-lg font-bold tracking-tight text-foreground`}>SunbloomAI</span>
         </Link>
         <nav className="hidden md:flex items-center gap-5 text-sm font-bold text-foreground">
