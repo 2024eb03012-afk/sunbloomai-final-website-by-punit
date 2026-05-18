@@ -1,10 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useId } from "react";
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-
-import Link from "next/link";
 // Logo will be referenced directly from public directory
 import { Poppins } from "next/font/google";
 import LogoMarquee from "../components/LogoMarquee";

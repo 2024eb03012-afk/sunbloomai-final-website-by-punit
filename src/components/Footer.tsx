@@ -41,18 +41,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Backed by line */}
-        <div className="mt-10 pt-6 border-t border-[var(--border)] text-center">
-          <a
-            href="https://www.smallgrp.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-          >
-            SunbloomAI is backed by{" "}
-            <span className="font-semibold text-foreground underline underline-offset-2">smallgroup</span>
-          </a>
-        </div>
+
       </div>
     </footer>
   );
