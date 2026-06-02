@@ -4,11 +4,20 @@ import { motion, MotionProps } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
+const motionElements = {
+  div: motion.div,
+  h1: motion.h1,
+  h2: motion.h2,
+  h3: motion.h3,
+  p: motion.p,
+  span: motion.span,
+}
+
 interface LineShadowTextProps
   extends Omit<React.HTMLAttributes<HTMLElement>, keyof MotionProps>,
     MotionProps {
   shadowColor?: string
-  as?: React.ElementType
+  as?: keyof typeof motionElements
 }
 
 export function LineShadowText({
@@ -18,7 +27,7 @@ export function LineShadowText({
   as: Component = "span",
   ...props
 }: LineShadowTextProps) {
-  const MotionComponent = motion.create(Component)
+  const MotionComponent = motionElements[Component] ?? motion.span
   const content = typeof children === "string" ? children : null
 
   if (!content) {

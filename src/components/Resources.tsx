@@ -1,124 +1,289 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ConvexHttpClient } from "convex/browser";
+import { makeFunctionReference } from "convex/server";
+import {
+  ArrowRight,
+  BookOpen,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  FileText,
+  FolderArchive,
+  Sparkles,
+  Terminal,
+} from "lucide-react";
 
-interface Resource {
-  title: string
-  category: string
-  description: string
-  link: string
-  icon: string
-  color: string
+type ResourceFile = {
+  _id?: string;
+  label: string;
+  description: string;
+  filename?: string;
+  url?: string | null;
+};
+
+type LeadMagnet = {
+  _id?: string;
+  slug: string;
+  headline: string;
+  tagText: string;
+  subtext: string;
+  bodyText: string;
+  iconKey: string;
+  heroImageUrl?: string | null;
+  displayOnTop?: boolean;
+  displayOnSunbloomWebsite?: boolean;
+  files: ResourceFile[];
+};
+
+const CONVEX_URL =
+  process.env.NEXT_PUBLIC_CONVEX_URL ?? "https://rare-loris-465.convex.cloud";
+const FREE_RESOURCE_BASE_URL =
+  process.env.NEXT_PUBLIC_FREE_RESOURCE_BASE_URL ?? "https://luke.sunbloomai.com/free-resource";
+
+const iconMap = {
+  folder: FolderArchive,
+  terminal: Terminal,
+  file: FileText,
+  sparkles: Sparkles,
+  book: BookOpen,
+  download: Download,
+};
+
+function queryRef(name: string) {
+  return makeFunctionReference<"query">(name);
 }
 
-const resources: Resource[] = [
-  {
-    title: "AI Implementation Playbook",
-    category: "Guide",
-    description: "A step-by-step guide to planning and deploying your first AI voice agent without any technical background.",
-    link: "#",
-    icon: "📖",
-    color: "from-blue-100 to-blue-50"
-  },
-  {
-    title: "ROI Calculator for Voice Bots",
-    category: "Tool",
-    description: "Calculate exactly how much you can save and the ROI you'll achieve by automating your call center.",
-    link: "#",
-    icon: "📐",
-    color: "from-emerald-100 to-emerald-50"
-  },
-  {
-    title: "Top 5 Automation Case Studies",
-    category: "Research",
-    description: "See how we scaled agencies and traditional businesses to 100K+ revenue effortlessly using AI systems.",
-    link: "#",
-    icon: "📈",
-    color: "from-purple-100 to-purple-50"
-  },
-  {
-    title: "The Prompt Engineering Guide",
-    category: "Cheat Sheet",
-    description: "Learn how to write the perfect prompts to get exactly what you need out of large language models.",
-    link: "#",
-    icon: "✨",
-    color: "from-amber-100 to-amber-50"
-  }
-]
+function ResourceIcon({ iconKey, className = "h-5 w-5" }: { iconKey: string; className?: string }) {
+  const Icon = iconMap[iconKey as keyof typeof iconMap] ?? FileText;
+  return <Icon className={className} strokeWidth={2.2} />;
+}
+
+function resourceChips(resource: LeadMagnet) {
+  const chips = ["Uses AI", ...resource.files.map((file) => file.label).filter(Boolean)];
+  const unique = Array.from(new Set(chips));
+  return unique.slice(0, 4);
+}
 
 export function Resources() {
+  const [resources, setResources] = useState<LeadMagnet[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const railRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadResources() {
+      try {
+        const client = new ConvexHttpClient(CONVEX_URL);
+        const list = await client.query(queryRef("leadMagnets:listSunbloomResources"), {});
+
+        if (cancelled) return;
+
+        const merged = Array.isArray(list) ? (list.filter(Boolean) as LeadMagnet[]) : [];
+
+        setResources(merged);
+      } catch (error) {
+        console.error("Failed to load lead magnets", error);
+        if (!cancelled) setResources([]);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    loadResources();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const showArrowNav = resources.length > 4;
+
+  const updateScrollState = () => {
+    const rail = railRef.current;
+    if (!rail) return;
+
+    const maxScrollLeft = rail.scrollWidth - rail.clientWidth - 4;
+    setCanScrollLeft(rail.scrollLeft > 8);
+    setCanScrollRight(rail.scrollLeft < maxScrollLeft);
+  };
+
+  useEffect(() => {
+    updateScrollState();
+    const rail = railRef.current;
+    if (!rail) return;
+
+    rail.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+
+    return () => {
+      rail.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+    };
+  }, [resources.length]);
+
+  const scrollByCard = (direction: "left" | "right") => {
+    const rail = railRef.current;
+    if (!rail) return;
+
+    const card = rail.querySelector<HTMLElement>("[data-resource-card='true']");
+    const amount = card ? card.offsetWidth + 24 : rail.clientWidth * 0.85;
+    rail.scrollBy({ left: direction === "right" ? amount : -amount, behavior: "smooth" });
+  };
+
   return (
-    <section id="resources" className="py-20 relative overflow-hidden bg-white">
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-b from-[#FF9A76]/5 to-transparent rounded-full blur-[100px] -z-10" />
-      
-      <div className="mx-auto max-w-[1200px] px-5">
-        <div className="text-center mb-12">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 mb-4"
+    <section id="resources" className="relative scroll-mt-28 overflow-hidden bg-white py-14 md:py-16">
+      <div className="mx-auto max-w-[1180px] px-5">
+        <div className="mb-7 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-xl">
+            <div className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#FF6B1A]">
+              Free resources
+            </div>
+            <h2 className="text-2xl font-semibold tracking-tight text-gray-950 md:text-3xl">
+              Practical AI guides from Sunbloom.
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-muted-foreground">
+              Short, useful downloads for setup, systems, and agent workflows.
+            </p>
+          </div>
+
+          <Link
+            href={FREE_RESOURCE_BASE_URL}
+            className="inline-flex h-10 items-center gap-2 self-start rounded-lg border border-[#FFB6A3]/70 bg-white px-3.5 text-sm font-semibold text-gray-950 transition hover:-translate-y-0.5 hover:border-[#FF9A76] hover:bg-[#FFF3E0]/60"
           >
-            Free Resources
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-muted-foreground max-w-2xl mx-auto"
-          >
-            Everything you need to understand, plan, and deploy autonomous AI agents for your business workflows.
-          </motion.p>
+            View all resources
+            <ArrowRight className="h-4 w-4" strokeWidth={2.3} />
+          </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {resources.map((res, idx) => (
-            <motion.a 
-              href={res.link} 
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              whileHover={{ y: -5 }}
-              className="group block h-full"
-            >
-              <div className="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-100 h-full flex flex-col relative overflow-hidden transition-all duration-300 group-hover:shadow-[0_20px_40px_rgba(255,154,118,0.15)] group-hover:border-[#FF9A76]/30">
-                
-                {/* Subtle gradient corner */}
-                <div className={`absolute -right-10 -top-10 w-32 h-32 rounded-full bg-gradient-to-br ${res.color} opacity-50 blur-2xl transition-transform duration-500 group-hover:scale-150`} />
+        <div className="relative">
+          {showArrowNav ? (
+            <>
+              <button
+                type="button"
+                aria-label="Previous resources"
+                onClick={() => scrollByCard("left")}
+                disabled={!canScrollLeft}
+                className="absolute left-0 top-1/2 z-10 hidden h-9 w-9 -translate-x-3 -translate-y-1/2 items-center justify-center rounded-full border border-[#FFB6A3]/50 bg-white text-gray-900 shadow-sm transition disabled:cursor-not-allowed disabled:opacity-35 lg:flex"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                aria-label="Next resources"
+                onClick={() => scrollByCard("right")}
+                disabled={!canScrollRight}
+                className="absolute right-0 top-1/2 z-10 hidden h-9 w-9 translate-x-3 -translate-y-1/2 items-center justify-center rounded-full border border-[#FFB6A3]/50 bg-white text-gray-900 shadow-sm transition disabled:cursor-not-allowed disabled:opacity-35 lg:flex"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </>
+          ) : null}
 
-                <div className="relative z-10 flex flex-col h-full">
-                  <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-2xl mb-6 shadow-sm border border-gray-100 group-hover:scale-110 transition-transform duration-300">
-                    {res.icon}
+          <div
+            ref={railRef}
+            className="flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {loading
+              ? Array.from({ length: 3 }).map((_, index) => (
+                  <div
+                    key={`resource-skeleton-${index}`}
+                    className="min-w-[82%] snap-start overflow-hidden rounded-xl border border-[#FFB6A3]/20 bg-white shadow-[0_10px_28px_rgba(28,28,28,0.04)] sm:min-w-[320px] lg:min-w-[280px] xl:min-w-[260px]"
+                  >
+                    <div className="h-24 animate-pulse bg-[#FFF3E0]" />
+                    <div className="space-y-3 p-4">
+                      <div className="h-3 w-20 rounded-full bg-gray-100" />
+                      <div className="h-4 w-4/5 rounded-full bg-gray-100" />
+                      <div className="flex gap-2">
+                        <div className="h-7 w-20 rounded-full bg-gray-100" />
+                        <div className="h-7 w-24 rounded-full bg-gray-100" />
+                      </div>
+                    </div>
                   </div>
-                  
-                  <div className="text-[10px] uppercase tracking-widest font-bold text-[#FF9A76] mb-3">
-                    {res.category}
-                  </div>
-                  
-                  <h3 className="text-lg font-bold text-gray-900 mb-3 leading-tight">
-                    {res.title}
-                  </h3>
-                  
-                  <p className="text-sm text-gray-500 leading-relaxed mb-6 flex-1">
-                    {res.description}
-                  </p>
-                  
-                  <div className="mt-auto flex items-center text-sm font-semibold text-gray-900 group-hover:text-[#FF9A76] transition-colors">
-                    Download
-                    <svg className="w-4 h-4 ml-1.5 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </motion.a>
-          ))}
+                ))
+              : resources.map((resource, index) => {
+              const fileCount = resource.files.length;
+              const resourceHref = `${FREE_RESOURCE_BASE_URL}/${resource.slug}`;
+              const chips = resourceChips(resource);
+
+              return (
+                <motion.article
+                  data-resource-card="true"
+                  key={resource.slug}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ delay: index * 0.06, duration: 0.35 }}
+                  className="group min-w-[82%] snap-start sm:min-w-[320px] lg:min-w-[280px] xl:min-w-[260px]"
+                >
+                  <Link
+                    href={resourceHref}
+                    className="flex h-[310px] flex-col overflow-hidden rounded-xl border border-[#FFB6A3]/30 bg-white shadow-[0_10px_28px_rgba(28,28,28,0.05)] transition duration-300 hover:-translate-y-0.5 hover:border-[#FFB6A3] hover:shadow-[0_16px_34px_rgba(255,154,118,0.12)]"
+                  >
+                    <div className="relative h-[104px] shrink-0 overflow-hidden bg-linear-to-br from-[#FFF3E0] via-white to-[#FFE4D8]">
+                      {resource.heroImageUrl ? (
+                        <Image
+                          src={resource.heroImageUrl}
+                          alt={resource.headline}
+                          fill
+                          sizes="(max-width: 640px) 82vw, 320px"
+                          className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                        />
+                      ) : (
+                        <div className="flex h-full items-center justify-center text-[#bf623f]">
+                          <ResourceIcon iconKey={resource.iconKey} className="h-6 w-6" />
+                        </div>
+                      )}
+                      <div className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-white/80 bg-white/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-gray-800 backdrop-blur">
+                        <ResourceIcon iconKey={resource.iconKey} className="h-3.5 w-3.5" />
+                        {resource.displayOnTop ? "Featured" : "Resource"}
+                      </div>
+                    </div>
+
+                    <div className="flex min-h-0 flex-1 flex-col p-4">
+                      <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#FF6B1A]">
+                        {resource.tagText}
+                      </div>
+                      <h3 className="min-h-[66px] text-lg font-bold leading-snug text-gray-950">
+                        {resource.headline}
+                      </h3>
+
+                      <div className="mt-3 flex min-h-[58px] flex-wrap content-start gap-2 overflow-hidden">
+                        <span className="rounded-full border border-[#FFB6A3]/45 bg-[#FFF3E0]/70 px-2.5 py-1 text-[11px] font-medium text-gray-800">
+                          {fileCount} file{fileCount === 1 ? "" : "s"}
+                        </span>
+                        {chips.map((chip) => (
+                          <span key={chip} className="rounded-full border border-gray-200 bg-white px-2.5 py-1 text-[11px] font-medium text-gray-700">
+                            {chip}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="mt-auto flex items-center justify-between pt-4">
+                        <span className="text-sm font-semibold text-gray-950 transition group-hover:text-[#FF6B1A]">
+                          Download or read
+                        </span>
+                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#FFF3E0] text-[#FF6B1A] transition group-hover:bg-[#FF9A76] group-hover:text-white">
+                          <ArrowRight className="h-4 w-4" strokeWidth={2.4} />
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.article>
+              );
+            })}
+          </div>
         </div>
+
+        {!loading && resources.length === 0 ? <p className="mt-4 text-sm text-muted-foreground">No resources are enabled for this section yet.</p> : null}
       </div>
     </section>
-  )
+  );
 }

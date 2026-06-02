@@ -49,7 +49,7 @@ export function Header() {
           <Link href="/" className="hover:text-foreground">Home</Link>
           <Link href="/#use-cases" className="hover:text-foreground">Service</Link>
           <Link href="/#outcomes" className="hover:text-foreground">Testimonial</Link>
-          <Link href="/resources" className="hover:text-foreground">Resources</Link>
+          <Link href="/#resources" className="hover:text-foreground">Resources</Link>
           <a
             href="https://cal.com/punit-gupta-grdgmd/30min"
             className="btn btn-primary"

@@ -1,6 +1,6 @@
 "use client"
 
-import { FC, useEffect, useRef, useState } from "react"
+import { FC, useEffect, useRef } from "react"
 import { motion, useSpring } from "motion/react"
 
 interface Position {
@@ -119,7 +119,7 @@ export function SmoothCursor({
 }: SmoothCursorProps) {
   const lastMousePos = useRef<Position>({ x: 0, y: 0 })
   const velocity = useRef<Position>({ x: 0, y: 0 })
-  const lastUpdateTime = useRef(Date.now())
+  const lastUpdateTime = useRef<number | null>(null)
   const previousAngle = useRef(0)
   const accumulatedRotation = useRef(0)
 
@@ -139,7 +139,8 @@ export function SmoothCursor({
   useEffect(() => {
     const updateVelocity = (currentPos: Position) => {
       const currentTime = Date.now()
-      const deltaTime = currentTime - lastUpdateTime.current
+      const previousTime = lastUpdateTime.current ?? currentTime
+      const deltaTime = currentTime - previousTime
 
       if (deltaTime > 0) {
         velocity.current = {
