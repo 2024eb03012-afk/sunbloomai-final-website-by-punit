@@ -64,9 +64,14 @@ function ResourceIcon({ iconKey, className = "h-5 w-5" }: { iconKey: string; cla
 }
 
 function resourceChips(resource: LeadMagnet) {
-  const chips = ["Uses AI", ...resource.files.map((file) => file.label).filter(Boolean)];
+  const fileCount = resource.files.length;
+  const chips = [
+    `${fileCount} file${fileCount === 1 ? "" : "s"}`,
+    "Uses AI",
+    ...resource.files.map((file) => file.label).filter(Boolean),
+  ];
   const unique = Array.from(new Set(chips));
-  return unique.slice(0, 4);
+  return unique.slice(0, 3);
 }
 
 export function Resources() {
@@ -209,7 +214,6 @@ export function Resources() {
                   </div>
                 ))
               : resources.map((resource, index) => {
-              const fileCount = resource.files.length;
               const resourceHref = `${FREE_RESOURCE_BASE_URL}/${resource.slug}`;
               const chips = resourceChips(resource);
 
@@ -225,7 +229,7 @@ export function Resources() {
                 >
                   <Link
                     href={resourceHref}
-                    className="flex h-[310px] flex-col overflow-hidden rounded-xl border border-[#FFB6A3]/30 bg-white shadow-[0_10px_28px_rgba(28,28,28,0.05)] transition duration-300 hover:-translate-y-0.5 hover:border-[#FFB6A3] hover:shadow-[0_16px_34px_rgba(255,154,118,0.12)]"
+                    className="flex h-[344px] flex-col overflow-hidden rounded-xl border border-[#FFB6A3]/30 bg-white shadow-[0_10px_28px_rgba(28,28,28,0.05)] transition duration-300 hover:-translate-y-0.5 hover:border-[#FFB6A3] hover:shadow-[0_16px_34px_rgba(255,154,118,0.12)]"
                   >
                     <div className="relative h-[104px] shrink-0 overflow-hidden bg-linear-to-br from-[#FFF3E0] via-white to-[#FFE4D8]">
                       {resource.heroImageUrl ? (
@@ -234,7 +238,7 @@ export function Resources() {
                           alt={resource.headline}
                           fill
                           sizes="(max-width: 640px) 82vw, 320px"
-                          className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                          className="object-contain p-2 transition duration-500 group-hover:scale-[1.03]"
                         />
                       ) : (
                         <div className="flex h-full items-center justify-center text-[#bf623f]">
@@ -251,14 +255,11 @@ export function Resources() {
                       <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#FF6B1A]">
                         {resource.tagText}
                       </div>
-                      <h3 className="min-h-[66px] text-lg font-bold leading-snug text-gray-950">
+                      <h3 className="line-clamp-3 min-h-[78px] text-lg font-bold leading-snug text-gray-950">
                         {resource.headline}
                       </h3>
 
-                      <div className="mt-3 flex min-h-[58px] flex-wrap content-start gap-2 overflow-hidden">
-                        <span className="rounded-full border border-[#FFB6A3]/45 bg-[#FFF3E0]/70 px-2.5 py-1 text-[11px] font-medium text-gray-800">
-                          {fileCount} file{fileCount === 1 ? "" : "s"}
-                        </span>
+                      <div className="mt-3 flex min-h-[58px] flex-wrap content-start gap-2">
                         {chips.map((chip) => (
                           <span key={chip} className="rounded-full border border-gray-200 bg-white px-2.5 py-1 text-[11px] font-medium text-gray-700">
                             {chip}
