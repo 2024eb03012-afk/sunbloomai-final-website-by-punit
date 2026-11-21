@@ -14,6 +14,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      { source: "/about-us", destination: "/company", permanent: true },
+      { source: "/resources", destination: "/research", permanent: true },
+    ];
+  },
   async rewrites() {
     return [
       {

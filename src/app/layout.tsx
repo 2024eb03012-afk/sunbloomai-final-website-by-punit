@@ -1,10 +1,8 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-// Favicon updated to use the branded sunbloom logo asset
-import Script from "next/script";
-import Footer from "../components/Footer";
-import ElevenLabsConvAI from "../components/ElevenLabsConvAI";
-import { SmoothCursor } from "../components/ui/smooth-cursor";
+import type { Metadata, Viewport } from "next";
+import { Inter, Newsreader } from "next/font/google";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { site } from "@/lib/site";
 
 import "./globals.css";
 
@@ -14,24 +12,48 @@ const inter = Inter({
   display: "swap",
 });
 
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "sunbloom ai — AI agents that work the way your team does",
-  description:
-    "Sunbloom AI designs, deploys, and operates bespoke AI agents that reduce costs and response times while protecting your brand voice.",
+  metadataBase: new URL(site.url),
+  title: {
+    default: "Sunbloom AI — Enterprise AI & Data Infrastructure",
+    template: "%s — Sunbloom AI",
+  },
+  description: site.description,
   keywords: [
+    "enterprise AI",
+    "AI data operations",
+    "data collection for AI",
+    "data annotation",
     "AI agents",
-    "AI as a service",
-    "automation",
-    "customer support AI",
-    "sales assistant",
+    "AI voice agents",
+    "workflow automation",
+    "AI evaluation",
+    "AI agent benchmarking",
     "Sunbloom AI",
   ],
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "sunbloom ai — AI agents that work the way your team does",
-    description:
-      "Design, deploy, and operate AI agents with measurable ROI. Professional, reliable, on-brand.",
+    title: "Sunbloom AI — Enterprise AI & Data Infrastructure",
+    description: "Build, power and evaluate intelligent systems.",
+    url: site.url,
+    siteName: site.name,
     type: "website",
     locale: "en_US",
+    images: [{ url: "/images/home.webp", width: 2400, height: 1637, alt: "Sunbloom AI" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sunbloom AI — Enterprise AI & Data Infrastructure",
+    description: "Build, power and evaluate intelligent systems.",
+    images: ["/images/home.webp"],
   },
   icons: {
     icon: "/sunbloom-logo.png",
@@ -40,26 +62,33 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <head>
-        <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
-      </head>
-      <body className={`${inter.variable} font-sans antialiased scroll-smooth`}>
-        <Script
-          src="https://assets.calendly.com/assets/external/widget.js"
-          strategy="afterInteractive"
-        />
-        <SmoothCursor />
-        {children}
-        <Footer />
-        <ElevenLabsConvAI />
+export const viewport: Viewport = {
+  themeColor: "#080808",
+  colorScheme: "dark",
+};
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: site.name,
+  url: site.url,
+  logo: `${site.url}/sunbloom-logo.png`,
+  email: site.email,
+  description: site.description,
+  sameAs: [site.linkedin],
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="en" className={`${inter.variable} ${newsreader.variable}`}>
+      <body className="min-h-screen bg-ink font-sans antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <SiteHeader />
+        <main id="main">{children}</main>
+        <SiteFooter />
       </body>
     </html>
   );
