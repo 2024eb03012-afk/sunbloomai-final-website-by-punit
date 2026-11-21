@@ -25,9 +25,10 @@ npm run lint
 
 ## Configuration
 
-| Variable | Purpose |
-| --- | --- |
-| `CONTACT_WEBHOOK_URL` | Where contact inquiries are POSTed as JSON (e.g. an n8n/Zapier/Make webhook or CRM intake). If unset, the form tells the visitor online submission is unavailable and offers a prefilled email to the company address instead. |
+Contact form delivery:
+
+1. **Web3Forms (primary).** The form posts directly from the visitor's browser to Web3Forms, which emails the inquiry (Reply-To set to the lead). The access key lives in `src/lib/site.ts` and can be overridden with `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY`. Web3Forms access keys are public by design; free-plan submissions must come from the browser, not a server.
+2. **Webhook (fallback, used only if no Web3Forms key is set).** `CONTACT_WEBHOOK_URL`: inquiries are POSTed as JSON by `/api/contact`. If neither is configured, visitors are offered a prefilled email instead.
 
 ## Notes
 

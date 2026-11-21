@@ -44,8 +44,8 @@ export default function PrivacyPage() {
 
         <h2>Third-party services</h2>
         <p>
-          We use third-party providers to host the website, receive inquiries and schedule calls (for example, our
-          booking page on Cal.com). Some pages include an AI voice assistant provided by ElevenLabs; if you choose to
+          We use third-party providers to host the website, deliver inquiries submitted through our contact form
+          (Web3Forms) and schedule calls (for example, our booking page on Cal.com). Some pages include an AI voice assistant provided by ElevenLabs; if you choose to
           use it, your conversation is processed by that provider. These services process information under their own
           terms and privacy policies.
         </p>

@@ -11,6 +11,13 @@ export const site = {
   email: "sunbloomai@gmail.com",
   bookingUrl: "https://cal.com/punit-gupta-grdgmd/30min",
   linkedin: "https://www.linkedin.com/company/sunbloom-ai/",
+  /**
+   * Web3Forms access key for the contact form. Web3Forms access keys are
+   * public by design (they can only send email to the owner's inbox), and
+   * free-plan submissions must come from the browser. Override per
+   * environment with NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY.
+   */
+  web3formsAccessKey: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ?? "0f1c4d8a-15fc-4693-943d-318ed6125885",
 } as const;
 
 export type Pillar = {

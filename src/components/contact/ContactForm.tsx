@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
-import { contactMailto, validateContact, type ContactErrors, type ContactPayload } from "@/lib/contact";
+import { contactMailto, fetchWeb3Forms, postToWeb3Forms, validateContact, type ContactErrors, type ContactPayload } from "@/lib/contact";
 import { inquiryTypes, site, type InquiryType } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -41,14 +41,23 @@ export function ContactForm() {
   const [values, setValues] = useState<ContactPayload>(empty);
   const [errors, setErrors] = useState<ContactErrors>({});
   const [status, setStatus] = useState<Status>("idle");
+  const [errorDetail, setErrorDetail] = useState<string>();
   const formRef = useRef<HTMLFormElement>(null);
   const uid = useId();
 
   // Preselect inquiry type from ?type= (used by CTAs across the site).
   useEffect(() => {
-    const t = new URLSearchParams(window.location.search).get("type");
-    if (t && inquiryTypes.some((i) => i.value === t)) {
+    const params = new URLSearchParams(window.location.search);
+    // Returning from Web3Forms after a successful submission.
+    if (params.get("submitted") === "1") {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time sync from the URL on mount
+      setStatus("success");
+      window.history.replaceState(null, "", "/contact");
+      window.setTimeout(() => document.getElementById("form-title")?.scrollIntoView({ block: "start" }), 50);
+      return;
+    }
+    const t = params.get("type");
+    if (t && inquiryTypes.some((i) => i.value === t)) {
       setValues((v) => ({ ...v, inquiryType: t as InquiryType }));
     }
   }, []);
@@ -78,7 +87,40 @@ export function ContactForm() {
       return;
     }
 
+    // Honeypot filled: a bot. Pretend success without sending anything.
+    if (values.website) {
+      setStatus("success");
+      return;
+    }
+
     setStatus("submitting");
+
+    // Primary delivery: Web3Forms, using its official fetch + FormData method.
+    if (site.web3formsAccessKey) {
+      setErrorDetail(undefined);
+      let result: { ok: boolean; message?: string };
+      try {
+        result = await fetchWeb3Forms(values, site.web3formsAccessKey);
+      } catch {
+        // The browser blocked the request (network/CORS), so nothing was sent.
+        // Fall back to a native form POST, which Web3Forms redirects back here.
+        try {
+          postToWeb3Forms(values, site.web3formsAccessKey, `${window.location.origin}/contact?submitted=1`);
+        } catch {
+          setStatus("error");
+        }
+        return;
+      }
+      if (result.ok) {
+        setStatus("success");
+      } else {
+        setErrorDetail(result.message);
+        setStatus("error");
+      }
+      return;
+    }
+
+    // Fallback delivery: server route forwarding to CONTACT_WEBHOOK_URL.
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -244,7 +286,13 @@ export function ContactForm() {
                 </span>
                 <h3 className="font-display text-display-sm mt-8">Thank you. Your inquiry has been received.</h3>
                 <p className="mt-4 max-w-md text-mute">
-                  We&rsquo;ll be in touch at <span className="text-white">{values.workEmail}</span>.
+                  {values.workEmail ? (
+                    <>
+                      We&rsquo;ll be in touch at <span className="text-white">{values.workEmail}</span>.
+                    </>
+                  ) : (
+                    "A member of our team will reply by email shortly."
+                  )}
                 </p>
               </div>
             ) : (
@@ -365,6 +413,7 @@ export function ContactForm() {
 
                 {status === "error" ? (
                   <p role="alert" className="mt-10 text-sm text-white">
+                    {errorDetail ? <span className="block text-mute">{errorDetail}</span> : null}
                     Something went wrong sending your inquiry. Please try again, or email us at{" "}
                     <a className="underline underline-offset-4" href={contactMailto(values)}>
                       {site.email}
