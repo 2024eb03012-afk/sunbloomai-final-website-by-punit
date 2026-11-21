@@ -242,14 +242,6 @@ export function ContactForm() {
             </p>
             <dl className="mt-14 space-y-8 border-t border-line pt-10 text-[0.9375rem]">
               <div>
-                <dt className="eyebrow text-mute">Email</dt>
-                <dd className="mt-2">
-                  <a href={`mailto:${site.email}`} className="text-white hover:underline hover:underline-offset-4">
-                    {site.email}
-                  </a>
-                </dd>
-              </div>
-              <div>
                 <dt className="eyebrow text-mute">Prefer to talk?</dt>
                 <dd className="mt-2">
                   <a

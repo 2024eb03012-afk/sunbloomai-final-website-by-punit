@@ -58,13 +58,13 @@ export default function PrivacyPage() {
 
         <h2>Your choices</h2>
         <p>
-          You can ask us to access, correct or delete the personal information we hold about you by emailing{" "}
-          <a href={`mailto:${site.email}`}>{site.email}</a>.
+          You can ask us to access, correct or delete the personal information we hold about you by contacting us
+          through our <a href="/contact">contact page</a>.
         </p>
 
         <h2>Contact</h2>
         <p>
-          Questions about this policy can be sent to <a href={`mailto:${site.email}`}>{site.email}</a>.
+          Questions about this policy can be submitted through our <a href="/contact">contact page</a>.
         </p>
       </Prose>
     </TextPage>

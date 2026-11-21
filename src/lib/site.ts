@@ -8,7 +8,7 @@ export const site = {
   tagline: "Enterprise AI & Data Infrastructure",
   description:
     "Sunbloom AI builds enterprise AI systems, powers AI training through high-quality data operations, and evaluates intelligent systems for real-world performance.",
-  email: "sunbloomai@gmail.com",
+  email: "",
   bookingUrl: "https://cal.com/punit-gupta-grdgmd/30min",
   linkedin: "https://www.linkedin.com/company/sunbloom-ai/",
   /**

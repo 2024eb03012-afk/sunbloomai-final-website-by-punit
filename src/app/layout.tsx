@@ -73,7 +73,6 @@ const organizationJsonLd = {
   name: site.name,
   url: site.url,
   logo: `${site.url}/sunbloom-logo.png`,
-  email: site.email,
   description: site.description,
   sameAs: [site.linkedin],
 };
