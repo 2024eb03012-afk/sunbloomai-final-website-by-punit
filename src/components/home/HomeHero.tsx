@@ -1,3 +1,4 @@
+import { FighterJets } from "@/components/home/FighterJets";
 import { HeroImage } from "@/components/site/HeroImage";
 import { Eyebrow } from "@/components/site/Section";
 
@@ -14,6 +15,8 @@ export function HomeHero() {
         />
       </div>
       <div aria-hidden="true" className="hero-scrim-home absolute inset-0 -z-10" />
+
+      <FighterJets />
 
       <div className="shell flex min-h-svh flex-col items-center justify-center pb-[28vh] pt-[calc(var(--header-h)+4rem)] text-center">
         <div className="flex flex-col items-center">

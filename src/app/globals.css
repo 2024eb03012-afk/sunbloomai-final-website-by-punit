@@ -372,3 +372,71 @@ textarea.field {
       linear-gradient(to bottom, rgba(8, 8, 8, 0.6) 0%, rgba(8, 8, 8, 0.55) 40%, rgba(8, 8, 8, 0.75) 75%, #080808 100%);
   }
 }
+
+/* ---------- Hero sky: a fighter jet crossing on a shallow climb ---------- */
+
+.jet-sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.jet-flight {
+  position: absolute;
+  top: var(--jet-top, 7.5%);
+  left: 0;
+  will-change: transform;
+  animation: jet-cross var(--jet-duration, 22s) linear 1.2s infinite;
+}
+
+/*
+ * The artwork already climbs to the right, so the element only needs to travel
+ * and gain a little altitude; the bob keeps it from looking like a decal.
+ */
+.jet {
+  display: block;
+  width: var(--jet-size, 150px);
+  height: auto;
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+  animation: jet-bob var(--jet-bob-duration, 6.5s) ease-in-out infinite;
+}
+
+/*
+ * Climbs left-to-right along the hero's ridge line: enters at ~38% of the
+ * section height and leaves the right edge at ~10%. The off-screen margins are
+ * kept tight so the on-screen part of the travel covers that whole climb.
+ */
+@keyframes jet-cross {
+  0% {
+    transform: translate3d(-12rem, 31.8vh, 0);
+  }
+  /* 60% of the cycle is the pass; the rest parks it off-screen until the next. */
+  60%,
+  100% {
+    transform: translate3d(calc(100vw + 2rem), 0, 0);
+  }
+}
+
+@keyframes jet-bob {
+  0%,
+  100% {
+    transform: translateY(-3px) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(3px) rotate(1deg);
+  }
+}
+
+@media (max-width: 1023px) {
+  .jet {
+    --jet-size: 115px;
+  }
+}
+
+@media (max-width: 767px) {
+  .jet {
+    --jet-size: 82px;
+  }
+}
